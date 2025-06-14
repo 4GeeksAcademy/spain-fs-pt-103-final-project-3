@@ -5,6 +5,10 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
 
 api = Blueprint('api', __name__)
 
@@ -22,7 +26,7 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-    @app.route("/signup", methods=["POST"])
+    @api.route("/signup", methods=["POST"])
     def signup():
         data = request.get_json()
         email = data.get("email")
@@ -44,15 +48,22 @@ def handle_hello():
 
     return jsonify({"msg": "Usuario creado exitosamente"}), 201
 
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
+    @api.route("/login", methods=["POST"])
+    def login():
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
 
-    user = User.query.filter_by(email=email).first()
-    if not user or not bcrypt.check_password_hash(user.password, password):
-        return jsonify({"msg": "Credenciales incorrectas"}), 401
+        user = User.query.filter_by(email=email).first()
+        if not user or not bcrypt.check_password_hash(user.password, password):
+            return jsonify({"msg": "Credenciales incorrectas"}), 401
 
-    access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token), 200
+        access_token = create_access_token(identity=user.id)
+        return jsonify(access_token=access_token), 200
+
+
+    @api.route("/protected", methods=["GET"])
+    @jwt_required()
+    def protected():
+        user_id = get_jwt_identity()
+        return jsonify({"msg": f"Hola usuario con ID {user_id}"}), 200
