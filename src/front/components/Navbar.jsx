@@ -1,6 +1,59 @@
 import { Link } from "react-router-dom";
+import {useState, useEffect} from "react";
 
 export const Navbar = () => {
+// Principales estados para el log in
+	const [logInEmail, setLogInEmail] = useState("");
+	const [logInPassword, setLogInPassword] = useState("");
+ 
+// Principales estados para el sign in
+
+    const [signInName, setSignInName] = useState("");
+	const [signInEmail, setSignInEmail] = useState("");
+	const [signInPassword, setSignInPassword] = useState("");
+
+// acceso a nuestra URL de back
+
+    const backEnd_url = import.meta.env.VITE_BACKEND_URL;
+
+// Uso de useEffect para manejar el bckground con el modal
+
+useEffect(() => {
+
+	const logInModalElement = document.getElementById('logInModal');
+	const signInModalElement = document.getElementById('signInModal');
+
+	const addSplineOverlayActive = () => {
+		document.body.classList.add('spline-overlay-active');
+	};
+
+	const removeSplineOverlayActive = () => {
+		document.body.classList.remove('spline-overlay-active');
+	};
+
+	if(logInModalElement) {
+		logInModalElement.addEventListener('shown.bs.modal', addSplineOverlayActive);
+        logInModalElement.addEventListener('hidden.bs.modal', removeSplineOverlayActive);
+	}
+	if(signInModalElement) {
+		signInModalElement.addEventListener('shown.bs.modal', addSplineOverlayActive);
+        signInModalElement.addEventListener('hidden.bs.modal', removeSplineOverlayActive);
+	}
+
+	return () => {
+		if(logInModalElement){
+			logInModalElement.removeEventListener('shown.bs.modal', addSplineOverlayActive);
+            logInModalElement.removeEventListener('hidden.bs.modal', removeSplineOverlayActive);
+		}
+		if(signInModalElement){
+			signInModalElement.removeEventListener('shown.bs.modal', addSplineOverlayActive);
+            signInModalElement.removeEventListener('hidden.bs.modal', removeSplineOverlayActive);
+		}
+	}
+},[]);
+
+
+
 
 	return (
 		<nav className="navbar">
@@ -9,10 +62,11 @@ export const Navbar = () => {
 					<span className="navbar-brand mb-0 h1 text-warning">APPName</span>
 				</Link>
 				<div className="ml-auto">
+
 					<button type="button" className="btn btn-warning" data-bs-toggle="modal" data-bs-target="#logInModal">
 						Log in
 					</button>
-					<div className="modal fade" id="logInModal" tabindex="-1" aria-labelledby="logInModalLabel" aria-hidden="true">
+					<div className="modal fade" id="logInModal" tabIndex="-1" aria-labelledby="logInModalLabel" aria-hidden="true">
 						<div className="modal-dialog">
 							<div className="modal-content">
 								<div className="modal-header">
@@ -21,10 +75,20 @@ export const Navbar = () => {
 								</div>
 								<div className="modal-body">
 									<form className=" d-flex row">
-										<label>Email</label>
-									    <input type="email" required />
-										<label>Password</label>
-										<input type="password" required />
+										<label htmlFor="logInEmail" >Email</label>
+									    <input 
+										type="email" 
+										id="logInEmail" 
+										required
+										value={logInEmail}
+										onChange={(e) => setLogInEmail(e.target.value)}  />
+										<label htmlFor="logInPassword">Password</label>
+										<input 
+										type="password"
+										id="logInPassword"
+										required
+										value={logInPassword}
+										onChange={(e) => setLogInPassword(e.target.vallue)} />
 									</form>
 								</div>
 								<div className="modal-footer">
@@ -37,10 +101,10 @@ export const Navbar = () => {
 
 
 
-					<button type="button" className="btn btn-warning m-4" data-bs-toggle="modal" data-bs-target="#signInModal">
+					<button type="button" className="btn btn-warning m-2" data-bs-toggle="modal" data-bs-target="#signInModal">
 						Sign in 
 					</button>
-					<div className="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+					<div className="modal fade" id="signInModal" tabIndex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
 						<div className="modal-dialog">
 							<div className="modal-content">
 								<div className="modal-header">

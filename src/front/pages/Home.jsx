@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import Spline from '@splinetool/react-spline';
 
 export const Home = () => {
 
@@ -33,9 +34,22 @@ export const Home = () => {
 	}, [])
 
 	return (
-		<div className="text-center mt-5 ">
-			<h1 className="display-4">Hello Team!!</h1>
+
+		<div className="home-container">
+			<div className="spline-background-wrapper">
+				<Spline 
+
+				scene="https://prod.spline.design/COH62uJOOndOyiic/scene.splinecode"
+				width="100%"
+                height="100%"
+
+				/>
+
+			</div>
+		<div className=" title text-center mt-5 ">
+			<h1 className="display-4">APP NAME </h1>
 			
+		</div>
 		</div>
 	);
 }; 

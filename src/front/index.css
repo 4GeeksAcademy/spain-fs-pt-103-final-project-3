@@ -1,12 +1,64 @@
 body{
-    background-color: bisque;
+    background-image: url("https://img.freepik.com/vector-premium/fondo-patrones-fisuras-doodle-cocina-herramientas-lindo-dibujo_43503-28.jpg");
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+   
+
+}
+
+.title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 400px;
 }
 
 .navbar{
-    background-color: rgb(187, 172, 105);
+    position: relative;
+    z-index: 1; 
+    background-color: rgb(0, 0, 0, 0.8);
+    
     
 }
 
 .no-underline-link{
     text-decoration: none;
+}
+
+.home-container{
+
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    z-index: 0;
+    flex-direction: column;
+
+}
+
+.spline-background-wrapper{
+
+    position: fixed;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+
+}
+body.spline-overlay-active .spline-background-wrapper {
+    visibility: hidden !important;
+}
+
+.footer {
+    position: fixed;
+    z-index: 20;
+}
+
+.modal ::backdrop{
+    z-index: 9999!important;
+}
+
+.modal{
+    z-index: 9999 !important;
 }
