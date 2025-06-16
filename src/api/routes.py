@@ -33,7 +33,7 @@ def signup():
 
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
-    new_user = User(email=email, password=hashed_password)
+    new_user = User(email=email, password=hashed_password, is_active=True)
     db.session.add(new_user)
     db.session.commit()
 
@@ -50,15 +50,9 @@ def login():
     if not user or not bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Credenciales incorrectas"}), 401
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=user.email)
     return jsonify(access_token=access_token), 200
 
-
-import requests
-from flask import request, jsonify
-from flask import Blueprint
-
-api = Blueprint("api", __name__)
 
 #SPOONACULAR_API_KEY =
 SPOONACULAR_ENDPOINT = "https://api.spoonacular.com/food/ingredients/search"
