@@ -97,10 +97,7 @@ def save_recipe():
     image_url = data.get("image_url")
 
 
-   # Esta parte nos ayuda a convertir una lista en un string json
-    if isinstance(ingredients, list):
-        ingredients = json.dumps(ingredients)
-
+   
     new_recipe = Recipes(
         name=name,
         ingredients=ingredients,
