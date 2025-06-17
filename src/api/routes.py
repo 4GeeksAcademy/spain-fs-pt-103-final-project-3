@@ -54,7 +54,7 @@ def login():
     return jsonify(access_token=access_token), 200
 
 
-#SPOONACULAR_API_KEY =
+SPOONACULAR_API_KEY = "2eb6935b9d2748ff93eaf15a59470a6f"
 SPOONACULAR_ENDPOINT = "https://api.spoonacular.com/food/ingredients/search"
 
 @api.route("/ingredients", methods=["GET"])
