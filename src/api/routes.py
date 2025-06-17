@@ -84,6 +84,36 @@ def get_ingredients():
     return jsonify(matched_ingredients), 200
 
 
+@api.route("/recipes", methods=["POST"])
+@jwt_required()
+def save_recipe():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+
+    name = data.get("name")
+    ingredients = data.get("ingredients")  
+    instructions = data.get("instructions")
+    cook_time = data.get("cook_time")
+    image_url = data.get("image_url")
+
+
+   # Esta parte nos ayuda a convertir una lista en un string json
+    if isinstance(ingredients, list):
+        ingredients = json.dumps(ingredients)
+
+    new_recipe = Recipes(
+        name=name,
+        ingredients=ingredients,
+        instructions=instructions,
+        cook_time=cook_time,
+        image_url=image_url,
+        user_id=user_id
+    )
+
+    db.session.add(new_recipe)
+    db.session.commit()
+
+    return jsonify({"msg": "Receta guardada correctamente"}), 201
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()
