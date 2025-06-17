@@ -16,7 +16,7 @@ class User(db.Model):
     recipes: Mapped[list["Recipe"]] = relationship(back_populates="user")
 
 
-class Recipe(db.Model):
+class Recipes(db.Model):
     __tablename__ = "recipe"
 
     id: Mapped[int] = mapped_column(primary_key=True)
