@@ -61,11 +61,15 @@ No agregues texto fuera del JSON.
             console.log('Contenido de la respuesta:', content)
 
             try {
-                const recipesJson = JSON.parse(content);
-                setRecipes(recipesJson);
-            }
-            catch (parseError) {
-                console.error('Error al parsear el JSON;', parseError);
+                const match = content.match(/\[.*\]/s);
+                if (match) {
+                    const recipesJson = JSON.parse(match[0]);
+                    setRecipes(recipesJson);
+                } else {
+                    setError('No se encontró un array JSON en la respuesta.');
+                }
+            } catch (parseError) {
+                console.error('Error al parsear el JSON:', parseError);
                 setError('No se pudo lograr la respuesta, prueba de nuevo...');
             }
 
@@ -80,43 +84,43 @@ No agregues texto fuera del JSON.
     }
 
 
+    console.log(recipes)
 
+    return (
 
-        return (
+        <div className="container">
+            <h1>Let's cook</h1>
+
+            <form onSubmit={handleSubmit}>
+                <div className="formIngredients">
+                    <label htmlFor="">Write your ingredients</label>
+                    <input
+                        type="text"
+                        value={ingredients}
+                        onChange={e => setIngredients(e.target.value)}
+                        placeholder="Ej: tomato , rice, milk..."
+                        required
+                    />
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Loading recipes" : "Buscar receta"}
+                    </button>
+                </div>
+            </form>
 
             <div>
-                <h1>Let's cook</h1>
+                <h2>Recipes</h2>
+                <ul>
+                    {recipes.map((recipe, index) => (
+                        <li key={index}>
+                            <h3>{recipe.name}</h3>
+                            <img src={recipe.img} alt={recipe.name} />
+                            <button><i className="fa-solid fa-heart"></i></button>
 
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="">Write your ingredients</label>
-                        <input
-                            type="text"
-                            value={ingredients}
-                            onChange={e => setIngredients(e.target.value)}
-                            placeholder="Ej: tomato , rice, milk..."
-                            required
-                        />
-                        <button type="submit" disabled={loading}>
-                            {loading ? "Loading recipes" : "Buscar receta"}
-                        </button>
-                    </div>
-                </form>
-
-                <div>
-                    <h2>Recipes</h2>
-                    <ul>
-                        {recipes.map((recipe, index) => (
-                            <li key={index}>
-                                <h3>{recipe.name}</h3>
-                                <img src={recipe.img} alt={recipe.name} />
-                                <button><i className="fa-solid fa-heart" style="color: #ff2600;"></i></button>
-
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
+                        </li>
+                    ))}
+                </ul>
             </div>
-        )
-    }
+
+        </div>
+    )
+}
