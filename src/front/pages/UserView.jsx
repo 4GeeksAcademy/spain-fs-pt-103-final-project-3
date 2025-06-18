@@ -11,7 +11,10 @@ export const UserView = () => {
     const [ingredients, setIngredients] = useState('');
     const [recipes, setRecipes] = useState([]);
     const [guardados, setGuardados] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
     const navigate = useNavigate();
+
     const client = new OpenAI({
         apiKey: import.meta.env.VITE_API_KEY,
         dangerouslyAllowBrowser: true
@@ -26,65 +29,94 @@ Para cada receta, incluye:
 Devuélvelo en un JSON con este formato:
 [
   {
-    "recipe": "Nombre de la receta",
+    "name": "Nombre de la receta",
     "img": "https://...",
     "steps": ["Paso 1", "Paso 2", ...]
   },
-  ...
+    ...
 ]
 No agregues texto fuera del JSON.
 `
 
 
-    const handleClick = async () => {
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+        setRecipes([]);
+        setLoading(true);
+        setError('');
+
+
+
         try {
             const response = await client.chat.completions.create({
-                model: "gpt-4",
+                model: "gpt-4o-mini",
                 messages: [
                     { role: "user", content: prompt }
                 ]
             });
 
             console.log('Respuesta completa de la API:', response);
+            const content = response.choices[0].message.content;
+            console.log('Contenido de la respuesta:', content)
 
-            setOutput(response.choices[0].message.content);
-        } catch (error) {
-            setOutput("Error: " + error.message);
+            try {
+                const recipesJson = JSON.parse(content);
+                setRecipes(recipesJson);
+            }
+            catch (parseError) {
+                console.error('Error al parsear el JSON;', parseError);
+                setError('No se pudo lograr la respuesta, prueba de nuevo...');
+            }
+
         }
-    };
+        catch (error) {
+            console.error('Error de la API:', error);
+            setError('Error:' + error.message);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
 
 
 
 
-    return (
-
-        <div>
-            <h1>Let's cook</h1>
-
-            <form>
-                <div>
-                    <label htmlFor="">Indica tus ingredientes</label>
-                    <input type="text" />
-                    <button type="submit" onClick={handleClick}>
-                        Buscar receta
-                    </button>
-                </div>
-            </form>
+        return (
 
             <div>
-                <h2>Recetas encontradas</h2>
-                <ul>
-                    {recipes.map(() => (
-                        <li>
-                            <h3>{recipe.name}</h3>
-                            <img src={recipe.photo} alt={recipe.name} />
-                            <button><i class="fa-solid fa-heart" style="color: #ff2600;"></i></button>
+                <h1>Let's cook</h1>
 
-                        </li>
-                    ))}
-                </ul>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="">Write your ingredients</label>
+                        <input
+                            type="text"
+                            value={ingredients}
+                            onChange={e => setIngredients(e.target.value)}
+                            placeholder="Ej: tomato , rice, milk..."
+                            required
+                        />
+                        <button type="submit" disabled={loading}>
+                            {loading ? "Loading recipes" : "Buscar receta"}
+                        </button>
+                    </div>
+                </form>
+
+                <div>
+                    <h2>Recipes</h2>
+                    <ul>
+                        {recipes.map((recipe, index) => (
+                            <li key={index}>
+                                <h3>{recipe.name}</h3>
+                                <img src={recipe.img} alt={recipe.name} />
+                                <button><i className="fa-solid fa-heart" style="color: #ff2600;"></i></button>
+
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
             </div>
-
-        </div>
-    )
-} 
+        )
+    }
