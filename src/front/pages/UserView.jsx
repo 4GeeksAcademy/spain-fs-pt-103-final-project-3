@@ -24,13 +24,13 @@ export const UserView = () => {
 Genera 5 recetas usando solo estos ingredientes: ${ingredients}.
 Para cada receta, incluye:
 - El nombre de la receta ("recipe")
-- Una URL de imagen representativa ("img") (puedes inventarla si no puedes generarla)
-- Un array con el paso a paso ("steps")
+- Un array con el paso a paso muy bien desarrollado y extenso donde indique que utensilios debo usar ("steps")
+- Indica la dificultad para reaalizarla("dificult")
+- Tiempo de elaboración ("time")
 Devuélvelo en un JSON con este formato:
 [
   {
     "name": "Nombre de la receta",
-    "img": "https://...",
     "steps": ["Paso 1", "Paso 2", ...]
   },
     ...
@@ -80,6 +80,7 @@ No agregues texto fuera del JSON.
         }
         finally {
             setLoading(false);
+            setIngredients('');
         }
     }
 
@@ -114,6 +115,8 @@ No agregues texto fuera del JSON.
                         <li key={index}>
                             <h3>{recipe.name}</h3>
                             <img src={recipe.img} alt={recipe.name} />
+                            <p>{recipe.time}</p>
+                            <p>{recipe.dificult}</p>
                             <button><i className="fa-solid fa-heart"></i></button>
 
                         </li>
