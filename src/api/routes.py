@@ -54,63 +54,7 @@ def login():
     return jsonify(access_token=access_token), 200
 
 
-SPOONACULAR_API_KEY = "2eb6935b9d2748ff93eaf15a59470a6f"
-SPOONACULAR_ENDPOINT = "https://api.spoonacular.com/food/ingredients/search"
 
-@api.route("/ingredients", methods=["GET"])
-def get_ingredients():
-    ingredients_raw = request.args.get("ingredients") 
-    if not ingredients_raw:
-        return jsonify({"msg": "Faltan ingredientes"}), 400
-
-    ingredients_list = ingredients_raw.split(",")
-
-    # Spoonacular solo admite búsquedas de un ingrediente a la vez, toca que añadamos los ingredientes uno a uno.
-    matched_ingredients = []
-
-    for ing in ingredients_list:
-        response = requests.get(SPOONACULAR_ENDPOINT, params={
-            "query": ing.strip(),
-            "number": 5,
-            "apiKey": SPOONACULAR_API_KEY
-        })
-
-        if response.status_code == 200:
-            data = response.json()
-            matched_ingredients.extend(data)
-        else:
-            matched_ingredients.append({"name": ing.strip(), "error": "No encontrado en API"})
-
-    return jsonify(matched_ingredients), 200
-
-
-@api.route("/recipes", methods=["POST"])
-@jwt_required()
-def save_recipe():
-    user_id = get_jwt_identity()
-    data = request.get_json()
-
-    name = data.get("name")
-    ingredients = data.get("ingredients")  
-    instructions = data.get("instructions")
-    cook_time = data.get("cook_time")
-    image_url = data.get("image_url")
-
-
-   
-    new_recipe = Recipes(
-        name=name,
-        ingredients=ingredients,
-        instructions=instructions,
-        cook_time=cook_time,
-        image_url=image_url,
-        user_id=user_id
-    )
-
-    db.session.add(new_recipe)
-    db.session.commit()
-
-    return jsonify({"msg": "Receta guardada correctamente"}), 201
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()
