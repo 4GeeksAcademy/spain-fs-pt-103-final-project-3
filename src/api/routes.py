@@ -19,6 +19,21 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
+@api.route("/user", methods=["GET"])
+@jwt_required()
+def get_user():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if user is None:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    return jsonify({
+        "id": user.id,
+        "email": user.email
+    }), 200
+
+
 @api.route("/signup", methods=["POST"])
 def signup():
     data = request.get_json()
