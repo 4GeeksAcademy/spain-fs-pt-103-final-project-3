@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
+from sqlalchemy import select
 
 api = Blueprint('api', __name__)
 CORS(api)
@@ -23,7 +24,7 @@ def handle_hello():
 @jwt_required()
 def get_user():
     user_id = get_jwt_identity()
-    user = User.query.get(user_id)
+    user = db.session.execute(select(User).where(User.email == user_email)).scalar_one_or_none()
 
     if user is None:
         return jsonify({"msg": "Usuario no encontrado"}), 404
@@ -68,7 +69,28 @@ def login():
     access_token = create_access_token(identity=user.email)
     return jsonify(access_token=access_token), 200
 
+@api.route("/password", methods=["PUT"])
+@jwt_required()
+def change_password():
+    data = request.get_json() 
+    new_password = data.get("password")
 
+    if not new_password:
+        return jsonify({"msg": "La nueva contraseña es obligatoria"}), 400
+
+
+    user_email = get_jwt_identity()
+    user = db.session.execute(select(User).where(User.email == user_email)).scalar_one_or_none()
+
+
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    user.password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+
+    db.session.commit()
+
+    return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
 
 
 @api.route("/protected", methods=["GET"])
