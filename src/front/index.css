@@ -42,24 +42,32 @@ li {
   border-radius: 20px;
   margin-bottom: 10px;
   display: flex;
-  height: 200px;
+  flex-direction: column;
+  height: 180px;
   width: 700px;
   padding: 10px;
-  justify-content: space-between;
-  overflow: hidden;
+  
 }
 
-.recipe-img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.recipe-info {
+.header-recipe{
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-left: 20px;
-  gap: 5px;
+  justify-content: space-between;
+  height: 50px;
+  padding: 5px;
+  margin-right: 5px;
+  align-items: center;
+}
+
+.recipe-body{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.recipe-img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
 }

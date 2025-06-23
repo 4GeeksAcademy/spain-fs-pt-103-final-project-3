@@ -21,7 +21,7 @@ export const UserView = () => {
     });
 
     const prompt = `
-Genera 5 recetas usando solo estos ingredientes: ${ingredients}.
+Genera 3 recetas usando solo estos ingredientes: ${ingredients}.
 Para cada receta, incluye:
 - El nombre de la receta ("name")
 - Un array con el paso a paso muy bien desarrollado y extenso donde indique que utensilios debo usar ("steps")
@@ -155,20 +155,20 @@ No agregues texto fuera del JSON.
 
             {!loading && recipes.length > 0 && (
             <div>
-                <h2>Recetas pensadas para ti:</h2>
+                <h2 className="ms-5 mb-4">Recetas pensadas para ti:</h2>
                 <ul>
                     {recipes.map((recipe, index) => (
                         <li key={index}>
                             <div className="header-recipe">
                             <h3>{recipe.name}</h3>
+                            <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5"></i>
                             </div>
-                            <i className="fa-solid fa-heart heart"></i>
                             <div className="recipe-body">
                             {recipe.img && <img src={recipe.img} alt={recipe.name} className="recipe-img" />}
-                            </div>
-                            <div className="recipe-info">
+                            <div className="recipe-info me-4">
                             <p>{recipe.time}</p>
                             <p>{recipe.dificult}</p>
+                            </div>
                             </div>
 
                         </li>
