@@ -9,6 +9,7 @@ import OpenAI from "openai";
 export const UserView = () => {
 
     const [ingredients, setIngredients] = useState('');
+    const [ingredienteAñadido, setIngredienteAñadido] = useState('');
     const [recipes, setRecipes] = useState([]);
     const [guardados, setGuardados] = useState([]);
     const [loading, setLoading] = useState(false)
@@ -20,9 +21,34 @@ export const UserView = () => {
         dangerouslyAllowBrowser: true
     });
 
+    const addIngredient = (e) => {
+        e.preventDefault();
+
+        if (!ingredienteAñadido.trim()) return;
+
+        const ingredient = ingredienteAñadido.trim().toLowerCase();
+
+        if (!ingredients.includes(ingredient) && ingredients.length < 11)  {
+            setIngredients(prev => [...prev,ingredient])
+            setIngredienteAñadido('');
+        }
+        if (ingredients.includes(ingredient)){
+            setError('Ingrediente ya añadido');
+            alert('Ingrediente ya añadido')
+        }
+        else{
+            setError('Máximo de ingredientes alcanzados')
+        }
+    }
+
+    const eliminarIngrediente = (ingredieteToRemove) => {
+        setIngredients (prev => prev.filter(ingredient => ingredient !== ingredieteToRemove));
+    }
+
+
     //prompt que pasamos a la IA para que genere la receta 
     const prompt = `
-Genera 3 recetas usando solo estos ingredientes: ${ingredients}.
+Genera 3 recetas usando un lenguaje de chef profesional, usando solo y unicamente (sin añadir ingredientes extra) estos ingredientes: ${ingredients}, damos por hecho que disponemos de aceite, sal y pimienta.
 Para cada receta, incluye:
 - El nombre de la receta ("name")
 - Un array con el paso a paso muy bien desarrollado y extenso donde indique que utensilios debo usar ("steps")
@@ -60,6 +86,13 @@ No agregues texto fuera del JSON.
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+        if (ingredients.length === 0){
+            setError('Añade ingredientes')
+            alert('Añade un ingrediente')
+        }
+
+
         setRecipes([]);
         setLoading(true);
         setError('');
@@ -122,21 +155,39 @@ No agregues texto fuera del JSON.
         <div className="userContainer">
             <h1 className="userTitle">Let's cook</h1>
 
-            <form onSubmit={handleSubmit}>
-                <div className="formIngredients">
-                    <label htmlFor="">Indica tus ingredientes</label>
-                    <input
-                        type="text"
-                        value={ingredients}
-                        onChange={e => setIngredients(e.target.value)}
-                        placeholder="Ej: tomate , arroz, leche..."
-                        required
-                    />
-                    <button className="buscador" type="submit" disabled={loading}>
-                        {loading ? "Generando recetas" : "Generar receta"}
-                    </button>
+            <form onSubmit={addIngredient}>
+                <div>
+                    <label htmlFor="">Añade un ingrediente</label>
                 </div>
+                <div>
+                    <input 
+                    type="text"
+                    value={ingredienteAñadido}
+                    onChange={e => setIngredienteAñadido(e.target.value)} 
+                    placeholder="Ej: tomate, arroz, pollo..."
+                    disabled={ingredients.length>=10}
+                    />
+                </div>
+
             </form>
+
+            {ingredients.length > 0 && (
+                <div>
+                    <ul className="listadoIngredientes">
+                    {ingredients.map((ingredient, index) => (
+                        <li key={index} onClick={()=> eliminarIngrediente(ingredient)} className="ingrediente">
+                            {ingredient}
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+            )}
+
+            {ingredients.length > 0 && (
+                <div>
+                    <button className="buscador" onClick={handleSubmit} disabled = {loading || ingredients.length === 0}>{loading ? "Generando recetas..." : "Generar recetas"}</button>
+                </div>
+            )}
 
 
             {loading && (

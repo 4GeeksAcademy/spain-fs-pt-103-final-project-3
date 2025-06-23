@@ -1,8 +1,10 @@
-.userContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
+
+  .userContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
 
 .formIngredients {
   display: flex;
@@ -46,10 +48,9 @@ li {
   height: 180px;
   width: 700px;
   padding: 10px;
-  
 }
 
-.header-recipe{
+.header-recipe {
   display: flex;
   justify-content: space-between;
   height: 50px;
@@ -58,7 +59,7 @@ li {
   align-items: center;
 }
 
-.recipe-body{
+.recipe-body {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,8 +67,24 @@ li {
   font-size: 20px;
 }
 
-.recipe-img{
+.recipe-img {
   height: 100px;
   width: 100px;
   border-radius: 50%;
+}
+
+.ingrediente{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 100px;
+  height: 30px;
+}
+
+.listadoIngredientes{
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 600px;
+
 }
