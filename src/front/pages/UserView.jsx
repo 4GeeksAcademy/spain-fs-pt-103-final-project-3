@@ -20,6 +20,7 @@ export const UserView = () => {
         dangerouslyAllowBrowser: true
     });
 
+    //prompt que pasamos a la IA para que genere la receta 
     const prompt = `
 Genera 3 recetas usando solo estos ingredientes: ${ingredients}.
 Para cada receta, incluye:
@@ -39,18 +40,18 @@ Devuélvelo en un JSON con este formato:
 ]
 No agregues texto fuera del JSON.
 `
-
+    // configuración para la creación de imagenes de la receta 
     const generateImg = async (recipeName) => {
-        try{
+        try {
             const imageResponse = await client.images.generate({
                 model: "dall-e-2",
                 prompt: `Deliciosa ${recipeName}, fotografía de la comida, luz profesional, apetitosa y sobre mesa de madera `,
-                n:1,
+                n: 1,
                 size: "256x256"
             });
             return imageResponse.data[0].url;
         }
-        catch(err){
+        catch (err) {
             return null;
         }
     };
@@ -62,7 +63,6 @@ No agregues texto fuera del JSON.
         setRecipes([]);
         setLoading(true);
         setError('');
-
 
 
         try {
@@ -77,24 +77,24 @@ No agregues texto fuera del JSON.
             const content = response.choices[0].message.content;
             console.log('Contenido de la respuesta:', content)
 
-            
-                const match = content.match(/\[.*\]/s);
-                if (!match) {
+
+            const match = content.match(/\[.*\]/s);
+            if (!match) {
                 setError('No se encontró un array JSON en la respuesta.');
                 return;
             }
 
             const recipesJson = JSON.parse(match[0]);
             console.log('Recetas parseadas:', recipesJson);
-           
-            
+
+
             const recipesWithImages = await Promise.all(
                 recipesJson.map(async (recipe, index) => {
                     console.log(`Procesando receta ${index + 1}/${recipesJson.length}: ${recipe.name}`);
                     const img = await generateImg(recipe.name);
-                    return { 
-                        ...recipe, 
-                        img: img || '' 
+                    return {
+                        ...recipe,
+                        img: img || ''
                     };
                 })
             );
@@ -138,9 +138,11 @@ No agregues texto fuera del JSON.
                 </div>
             </form>
 
-        
 
             {loading && (
+
+                // generador de animación para cuando carga las recetas 
+
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 300 }}>
                     <lottie-player
                         src="/loader.json"
@@ -153,28 +155,30 @@ No agregues texto fuera del JSON.
                 </div>
             )}
 
-            {!loading && recipes.length > 0 && (
-            <div>
-                <h2 className="ms-5 mb-4">Recetas pensadas para ti:</h2>
-                <ul>
-                    {recipes.map((recipe, index) => (
-                        <li key={index}>
-                            <div className="header-recipe">
-                            <h3>{recipe.name}</h3>
-                            <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5"></i>
-                            </div>
-                            <div className="recipe-body">
-                            {recipe.img && <img src={recipe.img} alt={recipe.name} className="recipe-img" />}
-                            <div className="recipe-info me-4">
-                            <p>{recipe.time}</p>
-                            <p>{recipe.dificult}</p>
-                            </div>
-                            </div>
 
-                        </li>
-                    ))}
-                </ul>
-            </div>
+
+            {!loading && recipes.length > 0 && (
+                <div>
+                    <h2 className="ms-5 mb-4">Recetas pensadas para ti:</h2>
+                    <ul>
+                        {recipes.map((recipe, index) => (
+                            <li key={index}>
+                                <div className="header-recipe">
+                                    <h3>{recipe.name}</h3>
+                                    <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5"></i>
+                                </div>
+                                <div className="recipe-body">
+                                    {recipe.img && <img src={recipe.img} alt={recipe.name} className="recipe-img" />}
+                                    <div className="recipe-info me-4">
+                                        <p>{recipe.time}</p>
+                                        <p>{recipe.dificult}</p>
+                                    </div>
+                                </div>
+
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
 
         </div>
