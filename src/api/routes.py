@@ -23,7 +23,7 @@ def handle_hello():
 @api.route("/user", methods=["GET"])
 @jwt_required()
 def get_user():
-    user_id = get_jwt_identity()
+    user_email = get_jwt_identity()
     user = db.session.execute(select(User).where(User.email == user_email)).scalar_one_or_none()
 
     if user is None:
