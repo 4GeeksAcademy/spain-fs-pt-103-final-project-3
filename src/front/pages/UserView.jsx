@@ -14,12 +14,72 @@ export const UserView = () => {
     const [guardados, setGuardados] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [sideBar, setSideBar] = useState(false)
     const navigate = useNavigate();
 
     const client = new OpenAI({
         apiKey: import.meta.env.VITE_API_KEY,
         dangerouslyAllowBrowser: true
     });
+
+    useEffect(() => {
+        const savedFav = localStorage.getItem('favoriteRecipe')
+        if (savedFav) {
+            try {
+                setGuardados(JSON.parse(savedFav))
+            }
+            catch (err) {
+                localStorage.removeItem('favoriteRecipes')
+            }
+        }
+    }, []);
+
+    const saveToLocalStorage = (key, data) => {
+        try {
+            localStorage.setItem(key, JSON.stringify(data))
+        }
+        catch {
+            setError('Error al guardar')
+        }
+    }
+
+    const addFavorite = (recipe) => {
+        const idRecipe = {
+            ...recipe,
+            id: `${recipe.name}-${Date.now()}`,
+            timeSaved: new Date().toISOString(),
+            originalJson: JSON.stringify(recipe)
+        }
+
+        setGuardados(prev => {
+            const isFavorited = prev.some(favorite => favorite.name === recipe.name)
+
+            let newFavorites;
+            if (isFavorited) {
+                newFavorites = prev.filter(favorite => favorite.name !== recipe.name)
+                alert('Receta eliminade de tus favoritos')
+            }
+            else {
+                newFavorites = [...prev, idRecipe]
+                alert('Receta añadida a favoritos')
+            }
+            saveToLocalStorage('favoriteRecipes', newFavorites)
+            window.dispatchEvent(new Event('favoritesUpdate'))
+            return newFavorites
+        })
+    }
+
+    const removeFavorite = (name) => {
+        setGuardados(prev => {
+            const cargaFav = prev.filter(favorite => favorite.name !== name);
+            saveToLocalStorage('favoriteRecipes', cargaFav)
+            return cargaFav;
+        })
+    }
+
+    const inFavorite = (recipesName) => {
+        return guardados.some(favorite => favorite.name === recipesName)
+    }
 
     const addIngredient = (e) => {
         e.preventDefault();
@@ -28,21 +88,21 @@ export const UserView = () => {
 
         const ingredient = ingredienteAñadido.trim().toLowerCase();
 
-        if (!ingredients.includes(ingredient) && ingredients.length < 11)  {
-            setIngredients(prev => [...prev,ingredient])
+        if (!ingredients.includes(ingredient) && ingredients.length < 11) {
+            setIngredients(prev => [...prev, ingredient])
             setIngredienteAñadido('');
         }
-        if (ingredients.includes(ingredient)){
+        if (ingredients.includes(ingredient)) {
             setError('Ingrediente ya añadido');
             alert('Ingrediente ya añadido')
         }
-        else{
+        else {
             setError('Máximo de ingredientes alcanzados')
         }
     }
 
     const eliminarIngrediente = (ingredieteToRemove) => {
-        setIngredients (prev => prev.filter(ingredient => ingredient !== ingredieteToRemove));
+        setIngredients(prev => prev.filter(ingredient => ingredient !== ingredieteToRemove));
     }
 
 
@@ -87,7 +147,7 @@ No agregues texto fuera del JSON.
 
         e.preventDefault();
 
-        if (ingredients.length === 0){
+        if (ingredients.length === 0) {
             setError('Añade ingredientes')
             alert('Añade un ingrediente')
         }
@@ -153,19 +213,31 @@ No agregues texto fuera del JSON.
     return (
 
         <div className="userContainer">
+            {/* sidebar para favoritos */}
+            <button className={`sidebarButton${sideBar ? " moved" : ""}`} onClick={() => setSideBar(!sideBar)}>
+                <i className="fa-solid fa-heart text-danger"></i>
+            </button>
+            <div className={`sidebarContainer${sideBar ? " open" : ""}`}>
+                <div>
+                    <h4>Tus Favoritas</h4>
+
+                </div>
+            </div>
+
+
             <h1 className="userTitle">Let's cook</h1>
 
             <form onSubmit={addIngredient}>
                 <div>
-                    <label htmlFor="">Añade un ingrediente</label>
+                    <label className="d-flex justify-content-center">Añade un ingrediente</label>
                 </div>
                 <div>
-                    <input 
-                    type="text"
-                    value={ingredienteAñadido}
-                    onChange={e => setIngredienteAñadido(e.target.value)} 
-                    placeholder="Ej: tomate, arroz, pollo..."
-                    disabled={ingredients.length>=10}
+                    <input
+                        type="text"
+                        value={ingredienteAñadido}
+                        onChange={e => setIngredienteAñadido(e.target.value)}
+                        placeholder="Ej: tomate, arroz, pollo..."
+                        disabled={ingredients.length >= 10}
                     />
                 </div>
 
@@ -174,18 +246,18 @@ No agregues texto fuera del JSON.
             {ingredients.length > 0 && (
                 <div>
                     <ul className="listadoIngredientes">
-                    {ingredients.map((ingredient, index) => (
-                        <li key={index} onClick={()=> eliminarIngrediente(ingredient)} className="ingrediente">
-                            {ingredient}
-                        </li>
-                    ))}
+                        {ingredients.map((ingredient, index) => (
+                            <li key={index} onClick={() => eliminarIngrediente(ingredient)} className="ingrediente">
+                                {ingredient}
+                            </li>
+                        ))}
                     </ul>
                 </div>
             )}
 
             {ingredients.length > 0 && (
                 <div>
-                    <button className="buscador" onClick={handleSubmit} disabled = {loading || ingredients.length === 0}>{loading ? "Generando recetas..." : "Generar recetas"}</button>
+                    <button className="buscador" onClick={handleSubmit} disabled={loading || ingredients.length === 0}>{loading ? "Generando recetas..." : "Generar recetas"}</button>
                 </div>
             )}
 
@@ -216,7 +288,7 @@ No agregues texto fuera del JSON.
                             <li key={index}>
                                 <div className="header-recipe">
                                     <h3>{recipe.name}</h3>
-                                    <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5"></i>
+                                    <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5" style={{ cursor: 'pointer' }} onClick={() => addFavorite(recipe)}></i>
                                 </div>
                                 <div className="recipe-body">
                                     {recipe.img && <img src={recipe.img} alt={recipe.name} className="recipe-img" />}

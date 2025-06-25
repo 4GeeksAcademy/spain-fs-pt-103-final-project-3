@@ -15,7 +15,7 @@
 }
 
 input {
-  width: 500px;
+  width: 300px;
   border-radius: 20px;
   margin-bottom: 10px;
 }
@@ -79,6 +79,8 @@ li {
   justify-content: center;
   width: 100px;
   height: 30px;
+  overflow: hidden;
+  text-wrap: nowrap;
 }
 
 .listadoIngredientes{
@@ -87,4 +89,42 @@ li {
   flex-wrap: wrap;
   width: 600px;
 
+}
+
+.sidebarButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 40px;
+  border-radius: 20px;
+  z-index: 1300;
+  left: 0;
+  top: 50%;
+  background-color: bisque;
+  transition: left 0.3s ease;
+
+}
+
+.sidebarButton.moved{
+  left: 320px;
+  transform: translateY(-50%);
+}
+
+.sidebarContainer{
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 320px;
+  height: 100vh;
+  transition: left 0.3s ease;
+  z-index: 1200;
+  overflow-y: auto;
+  background-color: aqua;
+}
+
+.sidebarContainer.open{
+  left: 0;
 }
