@@ -1,10 +1,17 @@
+body{
+  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt%3Dais_items_boosted%26w%3D740);
+}
 
-  .userContainer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
+nav{
+  backdrop-filter: blur(15px);
+  z-index: 1500;
+}
 
+.userContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .formIngredients {
   display: flex;
@@ -73,7 +80,7 @@ li {
   border-radius: 50%;
 }
 
-.ingrediente{
+.ingrediente {
   display: flex;
   text-align: center;
   justify-content: center;
@@ -83,48 +90,46 @@ li {
   text-wrap: nowrap;
 }
 
-.listadoIngredientes{
+.listadoIngredientes {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
   width: 600px;
-
 }
 
-.sidebarButton{
+.sidebarButton {
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
   transform: translateY(-50%);
   width: 30px;
-  height: 40px;
-  border-radius: 20px;
+  height: 60px;
+  border-radius: 0 20px 20px 0;
   z-index: 1300;
   left: 0;
   top: 50%;
-  background-color: bisque;
+  background-color: rgb(189, 40, 20);
   transition: left 0.3s ease;
-
 }
 
-.sidebarButton.moved{
+.sidebarButton.moved {
   left: 320px;
   transform: translateY(-50%);
 }
 
-.sidebarContainer{
+.sidebarContainer {
   position: fixed;
-  top: 0;
+  top: 54px;
   left: -320px;
   width: 320px;
-  height: 100vh;
+  height: calc(100vh - 60px);
   transition: left 0.3s ease;
   z-index: 1200;
   overflow-y: auto;
-  background-color: aqua;
+  backdrop-filter: blur(15px);
 }
 
-.sidebarContainer.open{
+.sidebarContainer.open {
   left: 0;
 }

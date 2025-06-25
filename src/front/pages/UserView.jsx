@@ -215,11 +215,18 @@ No agregues texto fuera del JSON.
         <div className="userContainer">
             {/* sidebar para favoritos */}
             <button className={`sidebarButton${sideBar ? " moved" : ""}`} onClick={() => setSideBar(!sideBar)}>
-                <i className="fa-solid fa-heart text-danger"></i>
+                <i className="fa-solid fa-heart text-white"></i>
             </button>
             <div className={`sidebarContainer${sideBar ? " open" : ""}`}>
                 <div>
                     <h4>Tus Favoritas</h4>
+                    {guardados.length === 0 ? (
+                        <p>No has añadido recetas aún</p>) : (
+                            <li>
+
+                            </li>
+                        )
+                    }
 
                 </div>
             </div>
