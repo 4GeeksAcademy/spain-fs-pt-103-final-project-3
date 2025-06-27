@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import OpenAI from "openai";
+import TextPressure from '../components/TextPressure';
 
 
 
@@ -23,7 +24,7 @@ export const UserView = () => {
     });
 
     useEffect(() => {
-        const savedFav = localStorage.getItem('favoriteRecipe')
+        const savedFav = localStorage.getItem('favoriteRecipes')
         if (savedFav) {
             try {
                 setGuardados(JSON.parse(savedFav))
@@ -57,11 +58,11 @@ export const UserView = () => {
             let newFavorites;
             if (isFavorited) {
                 newFavorites = prev.filter(favorite => favorite.name !== recipe.name)
-                alert('Receta eliminade de tus favoritos')
+                
             }
             else {
                 newFavorites = [...prev, idRecipe]
-                alert('Receta añadida a favoritos')
+                
             }
             saveToLocalStorage('favoriteRecipes', newFavorites)
             window.dispatchEvent(new Event('favoritesUpdate'))
@@ -222,17 +223,38 @@ No agregues texto fuera del JSON.
                     <h4>Tus Favoritas</h4>
                     {guardados.length === 0 ? (
                         <p>No has añadido recetas aún</p>) : (
-                            <li>
-
-                            </li>
-                        )
+                        <ul>
+                            {guardados.map((favorite, index)=>(
+                                <li key={index} className="favoritedLi">
+                                    <div>
+                                    <img className="imgFav" src={favorite.img} alt={favorite.name} style={{width: 36, height: 36}}/>
+                                    <strong>{favorite.name}</strong>
+                                    <i className="fa fa-trash" onClick={()=> removeFavorite(favorite.name)}></i>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )
                     }
 
                 </div>
             </div>
 
 
-            <h1 className="userTitle">Let's cook</h1>
+            <div className="mt-5 mb-3" style={{ position: 'relative', height: '100px', width: '300px' }}>
+                <TextPressure
+                    text="LET'S COOK"
+                    flex={true}
+                    alpha={false}
+                    stroke={false}
+                    width={true}
+                    weight={true}
+                    italic={true}
+                    textColor="black"
+                    strokeColor="#ff0000"
+                    minFontSize={58}
+                />
+            </div>
 
             <form onSubmit={addIngredient}>
                 <div>

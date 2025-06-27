@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import TrueFocus from '../components/TrueFocus';
+
 
 
 export const Navbar = () => {
@@ -6,9 +8,16 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar navbar">
 			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
+
+				<TrueFocus
+					sentence="Receta App"
+					manualMode={false}
+					blurAmount={5}
+					borderColor="white"
+					animationDuration={2}
+					pauseBetweenAnimations={1}
+				/>
+
 				<div className="ml-auto">
 					<Link to="/demo">
 						<button className="btn btn-primary">Check the Context in action</button>
@@ -18,3 +27,4 @@ export const Navbar = () => {
 		</nav>
 	);
 };
+
