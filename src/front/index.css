@@ -1,0 +1,135 @@
+body{
+  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt%3Dais_items_boosted%26w%3D740);
+}
+
+nav{
+  backdrop-filter: blur(15px);
+  z-index: 1500;
+}
+
+.userContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.formIngredients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+
+input {
+  width: 300px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.buscador {
+  border-radius: 20px;
+  width: 200px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(199, 201, 84);
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.userTitle {
+  font-size: 50px;
+  margin-top: 20px;
+}
+
+li {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 180px;
+  width: 700px;
+  padding: 10px;
+}
+
+.header-recipe {
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  padding: 5px;
+  margin-right: 5px;
+  align-items: center;
+}
+
+.recipe-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.recipe-img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
+.ingrediente {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 100px;
+  height: 30px;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
+
+.listadoIngredientes {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 600px;
+}
+
+.sidebarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 60px;
+  border-radius: 0 20px 20px 0;
+  z-index: 1300;
+  left: 0;
+  top: 50%;
+  background-color: rgb(189, 40, 20);
+  transition: left 0.3s ease;
+}
+
+.sidebarButton.moved {
+  left: 320px;
+  transform: translateY(-50%);
+}
+
+.sidebarContainer {
+  position: fixed;
+  top: 54px;
+  left: -320px;
+  width: 320px;
+  height: calc(100vh - 60px);
+  transition: left 0.3s ease;
+  z-index: 1200;
+  overflow-y: auto;
+  backdrop-filter: blur(15px);
+}
+
+.sidebarContainer.open {
+  left: 0;
+}
