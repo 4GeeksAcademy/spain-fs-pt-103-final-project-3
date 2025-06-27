@@ -58,11 +58,11 @@ export const UserView = () => {
             let newFavorites;
             if (isFavorited) {
                 newFavorites = prev.filter(favorite => favorite.name !== recipe.name)
-                
+
             }
             else {
                 newFavorites = [...prev, idRecipe]
-                
+
             }
             saveToLocalStorage('favoriteRecipes', newFavorites)
             window.dispatchEvent(new Event('favoritesUpdate'))
@@ -78,9 +78,7 @@ export const UserView = () => {
         })
     }
 
-    const inFavorite = (recipesName) => {
-        return guardados.some(favorite => favorite.name === recipesName)
-    }
+
 
     const addIngredient = (e) => {
         e.preventDefault();
@@ -104,6 +102,10 @@ export const UserView = () => {
 
     const eliminarIngrediente = (ingredieteToRemove) => {
         setIngredients(prev => prev.filter(ingredient => ingredient !== ingredieteToRemove));
+    }
+
+    const recipeDetail = (recipe) => {
+        navigate('/recipe', {state: {recipe}})
     }
 
 
@@ -220,16 +222,16 @@ No agregues texto fuera del JSON.
             </button>
             <div className={`sidebarContainer${sideBar ? " open" : ""}`}>
                 <div>
-                    <h4>Tus Favoritas</h4>
+                    <h4 className="mt-4 d-flex justify-content-center">Tus Favoritas</h4>
                     {guardados.length === 0 ? (
                         <p>No has añadido recetas aún</p>) : (
                         <ul>
-                            {guardados.map((favorite, index)=>(
-                                <li key={index} className="favoritedLi">
+                            {guardados.map((favorite, index) => (
+                                <li key={index} className="favoritedLi mt-4">
                                     <div>
-                                    <img className="imgFav" src={favorite.img} alt={favorite.name} style={{width: 36, height: 36}}/>
-                                    <strong>{favorite.name}</strong>
-                                    <i className="fa fa-trash" onClick={()=> removeFavorite(favorite.name)}></i>
+                                        <img className="imgFav" src={favorite.img} alt={favorite.name} style={{ width: 36, height: 36 }} />
+                                        <strong>{favorite.name}</strong>
+                                        <i className="fa fa-trash" onClick={() => removeFavorite(favorite.name)}></i>
                                     </div>
                                 </li>
                             ))}

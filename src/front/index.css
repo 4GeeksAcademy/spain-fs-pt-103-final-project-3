@@ -3,7 +3,7 @@ body {
 }
 
 nav {
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(8px);
   z-index: 1500;
 }
 
@@ -42,6 +42,7 @@ input {
 label {
   font-size: 30px;
   margin-bottom: 10px;
+  
 }
 
 .userTitle {
@@ -58,7 +59,7 @@ li {
   width: 700px;
   padding: 10px;
   background-color: transparent;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(10px);
 }
 
 .header-recipe {
@@ -124,14 +125,14 @@ li {
 
 .sidebarContainer {
   position: fixed;
-  top: 54px;
+  top: 64px;
   left: -320px;
   width: 320px;
   height: calc(100vh - 60px);
   transition: left 0.3s ease;
   z-index: 1200;
   overflow-y: auto;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(8px);
 }
 
 .sidebarContainer.open {
@@ -140,7 +141,7 @@ li {
 
 .favoritedLi {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid black;
   width: 270px;
