@@ -1,0 +1,376 @@
+/* ==================================================
+   1) RESET GLOBAL & BOX-SIZING
+   ================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================================================
+   2) html, body y #root al 100%
+   ================================================== */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==================================================
+   3) VARIABLES DE TEMA: paleta verde/azul
+   ================================================== */
+:root {
+  --navbar-height:   120px;
+  --footer-height:   60px;
+  --font-main:       'Montserrat', sans-serif;
+
+  --primary:         #2a9d8f; /* teal */
+  --secondary:       #264653; /* dark teal */
+  --accent:          #e9c46a; /* amarillo */
+  --text-color:      #fff;
+
+  --overlay-color:   rgba(0, 0, 0, 0.4);
+
+  --input-bg:        rgba(255, 255, 255, 0.8);
+  --input-border:    rgba(0, 0, 0, 0.1);
+
+  --btn-gradient:    linear-gradient(135deg, #2a9d8f, #56c596);
+  --link-color:      var(--primary);
+  --link-hover:      #1f7a6e;
+}
+
+/* ==================================================
+   4) BODY & OVERLAY
+   ================================================== */
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-main);
+  color: var(--text-color);
+  background: url('/bg-pattern.jpg') center/cover fixed no-repeat;
+  position: relative;
+  overflow-x: hidden; /* evita scroll horizontal */
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--overlay-color);
+  z-index: 0;
+}
+#root {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================================================
+   5) NAVBAR “GLASS” + ANIMACIÓN
+   ================================================== */
+.navbar,
+.sticky-top {
+  background: rgba(255,255,255,0.10) !important;
+  backdrop-filter: blur(8px);
+  box-shadow: none !important;
+  height: var(--navbar-height) !important;
+  animation: fadeInDown 0.6s ease both;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* ==================================================
+   6) BRAND (LOGO + TEXTO)
+   ================================================== */
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+.brand-logo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  background: transparent;
+}
+.brand-text {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+/* ==================================================
+   7) PÁGINA CENTRAL + espacio para navbar/footer
+   ================================================== */
+.page-content {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+}
+
+/* ==================================================
+   8) FOOTER “GLASS” + ANIMACIÓN
+   ================================================== */
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--footer-height);
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.6s ease both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.footer small {
+  color: var(--text-color);
+  font-size: 0.875rem;
+}
+.footer a {
+  margin: 0 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+.footer a:hover {
+  color: var(--link-hover);
+}
+
+/* ==================================================
+   9) TARJETA COMÚN (Login + Register)
+   ================================================== */
+.auth-card {
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2rem;
+  max-width: 700px;
+  width: 90vw;
+}
+
+/* ==================================================
+  10) TÍTULO DE LA TARJETA
+   ================================================== */
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* ==================================================
+  11) INPUTS CON ICONO
+   ================================================== */
+.input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: rgba(0,0,0,0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 2.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  font-size: 1rem;
+  outline: none;
+}
+
+/* ==================================================
+  12) BOTÓN GRADIENTE
+   ================================================== */
+.btn-gradient {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--btn-gradient);
+  color: #fff;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* ==================================================
+  13) ENLACE ABAJO DEL BOTÓN
+   ================================================== */
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+.auth-footer a {
+  color: var(--link-hover);
+  font-weight: 600;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================
+  14) ADAPTACIÓN MÓVIL
+   ================================================== */
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+}
+
+/* ==================================================
+  15) ICONO DE VISIBILIDAD (OJO)
+   ================================================== */
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: rgba(0,0,0,0.4);
+  font-size: 1.2rem;
+  z-index: 1;
+}
+
+/* ==================================================
+  16) MEDIDOR DE FUERZA DE CONTRASEÑA
+   ================================================== */
+.password-strength {
+  height: 6px;
+  width: 100%;
+  margin-top: 0.25rem;
+  border-radius: 4px;
+  background-color: rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.password-strength > div {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+.password-strength-label {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  color: var(--text-color);
+}
+
+/* ==================================================
+  17) TARJETA DE INGREDIENTE (IngredientCard)
+   ================================================== */
+.ingredient-card {
+  width: 120px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, border 0.2s;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #fff;
+}
+.ingredient-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  background: #e9ecef;
+}
+.ingredient-card .label {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+.ingredient-card:hover {
+  transform: scale(1.04);
+  border-color: var(--primary);
+  box-shadow: 0 4px 8px rgba(0,128,0,0.2);
+}
+.ingredient-card.selected {
+  animation: pop 0.3s ease both;
+  border-color: var(--primary);
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ==================================================
+   18) RECIPE CARD
+   ================================================== */
+.recipe-card {
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  width: 250px;
+  margin: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.recipe-card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.recipe-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Usa la misma clase .btn que en otros componentes */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  background: var(--btn-gradient);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
