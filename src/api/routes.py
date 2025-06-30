@@ -93,6 +93,86 @@ def change_password():
     return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
 
 
+
+@api.route("/recipes", methods=["POST"])
+@jwt_required()
+def save_recipe():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+
+    name = data.get("name")
+    ingredients = data.get("ingredients")
+    instructions = data.get("instructions")
+    cook_time = data.get("cook_time")
+    image_url = data.get("image_url")
+
+    if not all([name, ingredients, instructions]):
+        return jsonify({"msg": "Faltan campos obligatorios"}), 400
+
+    if isinstance(ingredients, list):
+        ingredients = json.dumps(ingredients)
+
+    new_recipe = Recipe(
+        name=name,
+        ingredients=ingredients,
+        instructions=instructions,
+        cook_time=cook_time,
+        image_url=image_url,
+        user_id=user_id
+    )
+
+    db.session.add(new_recipe)
+    db.session.commit()
+
+    return jsonify({"msg": "Receta guardada"}), 201
+
+
+
+
+
+@api.route("/recipes/saved", methods=["GET"])
+@jwt_required()
+def get_saved_recipes():
+    user_id = get_jwt_identity()
+
+    stmt = select(Recipe).where(Recipe.user_id == user_id)
+    result = db.session.execute(stmt).scalars().all()
+
+    recipes = []
+    for recipe in result:
+        recipes.append({
+            "id": recipe.id,
+            "name": recipe.name,
+            "ingredients": json.loads(recipe.ingredients),
+            "instructions": recipe.instructions,
+            "cook_time": recipe.cook_time,
+            "image_url": recipe.image_url
+        })
+
+    return jsonify(recipes), 200
+
+
+
+@api.route("/recipes/saved/<int:id>", methods=["DELETE"])
+@jwt_required()
+def delete_saved_recipe(id):
+    user_id = get_jwt_identity()
+
+    stmt = select(Recipe).where(Recipe.id == id, Recipe.user_id == user_id)
+    recipe = db.session.execute(stmt).scalar_one_or_none()
+
+    if not recipe:
+        return jsonify({"msg": "Receta no encontrada"}), 404
+
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return jsonify({"msg": "Receta eliminada"}), 200
+
+
+
+
+
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
