@@ -1,42 +1,37 @@
 import React, { useState } from "react"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 
-export const Recipe = () =>{
+export const Recipe = () => {
 
-    const location = useLocation();
-    const {id} = useParams();
-    const navigate = useNavigate
 
-    const [loading, setLoading] = useState(false);
-    const [recipe, setRecipe] = useState(location.state.recipe || null);
+
 
 
 
 
     return (
-         <div>
-            <h1>{recipe.name}</h1>
+        <div className="d-flex justify-content-center">
             <div>
-                {recipe.img} && (
-                    <img src="recipe.img" alt="recipe.name" />
-                )
+                <h1>Recipe name </h1>
+                <img src="https://editorialtelevisa.brightspotcdn.com/58/eb/b537a4714c11890dfba66649ee13/flautas-transformed.jpeg" alt="img-recipe" style={{width:150}} />
                 <div>
-                    <p>{recipe.time}</p>
-                    <p>{recipe.dificult}</p>
-                </div>
-                <div>
-                    <h3>Empezemos a crear</h3>
-                    <ol>
-                        {recipe.steps.map((step, index) =>
-                        <li key={index}>
-                            <strong>Paso {index + 1}:</strong>{step}
-                        </li>
-                    )}
-                    </ol>
+
+                    <div>
+                        <p>time</p>
+                        <p>difi</p>
+                    </div>
+                    <div>
+                        <h3>Empezemos a crear</h3>
+                        <ol>
+                            <li>step1..</li>
+                            <li>step2..</li>
+                        </ol>
+
+                    </div>
                 </div>
             </div>
-         </div>
+        </div>
     )
 }

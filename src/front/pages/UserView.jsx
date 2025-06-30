@@ -105,7 +105,7 @@ export const UserView = () => {
     }
 
     const recipeDetail = (recipe) => {
-        navigate('/recipe', {state: {recipe}})
+        navigate('/recipe', { state: { recipe } })
     }
 
 
@@ -228,10 +228,16 @@ No agregues texto fuera del JSON.
                         <ul>
                             {guardados.map((favorite, index) => (
                                 <li key={index} className="favoritedLi mt-4">
-                                    <div>
-                                        <img className="imgFav" src={favorite.img} alt={favorite.name} style={{ width: 36, height: 36 }} />
-                                        <strong>{favorite.name}</strong>
-                                        <i className="fa fa-trash" onClick={() => removeFavorite(favorite.name)}></i>
+                                    <div className="favoriteContent">
+                                        <div className="starFav">
+                                            <i class="fa-solid fa-star fa-xl text-warning"></i>
+                                        </div>
+                                        <div className="textFav">
+                                            <strong>{favorite.name}</strong>
+                                        </div>
+                                        <div className="trashFav">
+                                            <i className="fa fa-trash" onClick={() => removeFavorite(favorite.name)}></i>
+                                        </div>
                                     </div>
                                 </li>
                             ))}

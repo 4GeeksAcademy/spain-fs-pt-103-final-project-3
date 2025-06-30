@@ -141,13 +141,33 @@ li {
 
 .favoritedLi {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   border: 1px solid black;
   width: 270px;
   height: 50px;
   font-size: 11px;
 }
+
+.favoriteContent{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.starFav{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.textFav{
+  display: flex;
+  justify-content: center;
+  flex: auto;
+  word-break: break-word;
+}
+
 
 .imgFav {
   border-radius: 50%;
@@ -156,12 +176,12 @@ li {
 .circular-text {
   margin: 0 auto;
   border-radius: 50%;
-  width: 300px;
+  width: 450px;
   position: relative;
-  height: 300px;
+  height: 450px;
   font-weight: bold;
   color: #000000;
-  font-weight: 800;
+  font-weight: 900;
   text-align: center;
   cursor: pointer;
   transform-origin: 50% 50%;

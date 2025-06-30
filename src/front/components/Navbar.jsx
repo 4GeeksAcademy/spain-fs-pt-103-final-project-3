@@ -10,11 +10,11 @@ export const Navbar = () => {
 			<div className="container">
 
 				<TrueFocus
-					sentence="Receta App"
+					sentence="LET'S COOK APP"
 					manualMode={false}
 					blurAmount={5}
 					borderColor="white"
-					animationDuration={2}
+					animationDuration={1}
 					pauseBetweenAnimations={1}
 				/>
 
