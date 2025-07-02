@@ -13,7 +13,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True, nullable=False)
 
     # Relación uno-a-muchos con Recipes
-    recipes: Mapped[list["Recipe"]] = relationship(back_populates="user")
+    recipes: Mapped[list["Recipes"]] = relationship(back_populates="user")
 
 
 class Recipes(db.Model):
@@ -22,7 +22,7 @@ class Recipes(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     ingredients: Mapped[str] = mapped_column(String(255), nullable=False)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
-    instructions: Mapped[str] = mapped_column(Text, nullable=False)
+    instructions: Mapped[str] = mapped_column(String, nullable=False)
     cook_time: Mapped[int] = mapped_column(nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="recipes")
