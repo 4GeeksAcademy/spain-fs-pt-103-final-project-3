@@ -230,7 +230,7 @@ No agregues texto fuera del JSON.
                                 <li key={index} className="favoritedLi mt-4">
                                     <div className="favoriteContent">
                                         <div className="starFav">
-                                            <i class="fa-solid fa-star fa-xl text-warning"></i>
+                                            <i class="fa-solid fa-lemon fa-2xl text-warning"></i>
                                         </div>
                                         <div className="textFav">
                                             <strong>{favorite.name}</strong>
@@ -322,7 +322,7 @@ No agregues texto fuera del JSON.
                     <h2 className="ms-5 mb-4">Recetas pensadas para ti:</h2>
                     <ul>
                         {recipes.map((recipe, index) => (
-                            <li key={index}>
+                            <li key={index} className="col-12 col-md-12 col-lg-12">
                                 <div className="header-recipe">
                                     <h3>{recipe.name}</h3>
                                     <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5" style={{ cursor: 'pointer' }} onClick={() => addFavorite(recipe)}></i>
