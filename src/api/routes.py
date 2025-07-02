@@ -73,14 +73,14 @@ def login():
 @jwt_required()
 def change_password():
     data = request.get_json() 
-    new_password = data.get("password")
+    new_password = data.get("new_password")
 
     if not new_password:
         return jsonify({"msg": "La nueva contraseña es obligatoria"}), 400
 
 
     user_email = get_jwt_identity()
-    user = db.session.execute(select(User).where(User.email == user_email)).scalar_or_none()
+    user = db.session.execute(select(User).where(User.email == user_email)).scalar_one_or_none()
 
 
     if not user:
