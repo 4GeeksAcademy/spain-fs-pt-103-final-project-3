@@ -73,7 +73,7 @@ def login():
 @jwt_required()
 def change_password():
     data = request.get_json() 
-    new_password = data.get("password")
+    new_password = data.get("new_password")
 
     if not new_password:
         return jsonify({"msg": "La nueva contraseña es obligatoria"}), 400
@@ -91,6 +91,84 @@ def change_password():
     db.session.commit()
 
     return jsonify({"msg": "Contraseña actualizada correctamente"}), 200
+
+
+
+@api.route("/recipes", methods=["POST"])
+@jwt_required()
+def save_recipe():
+    user_email = get_jwt_identity()
+    data = request.get_json()
+    name = data.get("name")
+    ingredients = data.get("ingredients")
+    instructions = data.get("instructions")
+    cook_time = data.get("cook_time")
+
+
+    if not all([name, ingredients, instructions]):
+        return jsonify({"msg": "Faltan campos obligatorios"}), 400
+
+    if isinstance(ingredients, list):
+        ingredients = json.dumps(ingredients)
+
+    new_recipe = Recipe(
+        name=name,
+        ingredients=ingredients,
+        instructions=instructions,
+        cook_time=cook_time,
+        user_id=user_email
+    )
+
+    db.session.add(new_recipe)
+    db.session.commit()
+
+    return jsonify({"msg": "Receta guardada"}), 201
+
+
+
+
+
+@api.route("/recipes/saved", methods=["GET"])
+@jwt_required()
+def get_saved_recipes():
+    user_email = get_jwt_identity()
+
+    get_recipe = select(Recipe).where(Recipe.user_email == user_email)
+    result = db.session.execute(get_recipe).scalars().all()
+
+    recipes = []
+    for recipe in result:
+        recipes.append({
+            "id": recipe.id,
+            "name": recipe.name,
+            "ingredients": json.loads(recipe.ingredients),
+            "instructions": recipe.instructions,
+            "cook_time": recipe.cook_time,
+            
+        })
+
+    return jsonify(recipes), 200
+
+
+
+@api.route("/recipes/saved/<int:id>", methods=["DELETE"])
+@jwt_required()
+def delete_saved_recipe(id):
+    user_email = get_jwt_identity()
+
+    kill_recipe = select(Recipe).where(Recipe.id == id, Recipe.user_email == user_email)
+    recipe = db.session.execute(kill_recipe).scalar_one_or_none()
+
+    if not recipe:
+        return jsonify({"msg": "Receta no encontrada"}), 404
+
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return jsonify({"msg": "Receta eliminada"}), 200
+
+
+
 
 
 @api.route("/protected", methods=["GET"])
