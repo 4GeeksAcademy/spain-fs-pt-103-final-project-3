@@ -1,0 +1,289 @@
+/* ==================================================
+   1) RESET GLOBAL & BOX-SIZING
+   ==================================================*/
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================================================
+   2) html, body y #root al 100%
+   ==================================================*/
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==================================================
+   3) VARIABLES DE TEMA: tonos azulados potentes
+   ==================================================*/
+:root {
+  --font-main:       'Montserrat', sans-serif;
+
+  --primary:         #1E3A8A;
+  --secondary:       #3B82F6;
+  --accent:          #60A5FA;
+  --text-light:      #E0F2FE;
+  --text-dark:       #0F172A;
+
+  --bg-gradient:     linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  --overlay-opacity: 0.15;
+
+  --card-bg:         rgba(255, 255, 255, 0.04);
+  --card-border:     rgba(255, 255, 255, 0.15);
+  --card-shadow:     rgba(0, 0, 0, 0.4);
+
+  --input-bg:        rgba(255, 255, 255, 0.15);
+  --input-border:    rgba(255, 255, 255, 0.3);
+
+  --btn-gradient:    linear-gradient(135deg, #3B82F6, #60A5FA);
+}
+
+/* ==================================================
+   4) BODY con gradiente y sin overlay gris
+   ==================================================*/
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-main);
+  color: var(--text-light);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+body::before {
+  display: none;
+}
+
+#root {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================================================
+   5) Ocultar navbar y footer
+   ==================================================*/
+.navbar, .sticky-top, .footer {
+  display: none !important;
+}
+
+/* ==================================================
+   6) TARJETA LIQUID GLASS CENTRAL
+   ==================================================*/
+.auth-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px var(--card-shadow);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 500px;       /* ancho fijo para consistencia */
+  max-width: 95%;     /* se adapta en pantallas muy pequeñas */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: cardFadeIn 0.8s ease both;
+}
+.auth-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px var(--card-shadow);
+}
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ==================================================
+   7) Título
+   ==================================================*/
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+/* ==================================================
+   8) INPUTS
+   ==================================================*/
+.input-group {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--text-light);
+  pointer-events: none;
+  z-index: 1;
+}
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 2.8rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: background 0.3s, border-color 0.3s;
+}
+.input-group input:focus {
+  background: rgba(255,255,255,0.25);
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+}
+.input-group input::placeholder {
+  color: rgba(224, 242, 254, 0.7);
+}
+
+/* ==================================================
+   9) Botón
+   ==================================================*/
+.btn-gradient {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--btn-gradient);
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* ==================================================
+   10) Pie de formulario
+   ==================================================*/
+.auth-footer {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-top: 1rem;
+}
+.auth-footer a {
+  color: var(--accent);
+  font-weight: 600;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================
+   11) Icono ojo
+   ==================================================*/
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 1.2rem;
+  z-index: 1;
+}
+
+/* ==================================================
+   12) Adaptación móvil
+   ==================================================*/
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+}
+/* ==================================================
+   19) BOTONES DE VENTANA ESTILO MAC
+   ==================================================*/
+.window-controls {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+.window-controls span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+.window-controls .btn-close {
+  background: #ff5f56;
+}
+.window-controls .btn-minimize {
+  background: #ffbd2e;
+}
+.window-controls .btn-maximize {
+  background: #27c93f;
+}
+/* ==================================================
+   OVERRIDES: uniformidad y alineación de los botones Mac
+   ==================================================*/
+.window-controls {
+  right: 16px !important;
+  left: auto !important;
+  gap: 6px !important;
+}
+/* Asegurar tamaño idéntico solo en los botones, no en spans genéricos */
+.window-controls .btn-close,
+.window-controls .btn-minimize,
+.window-controls .btn-maximize {
+  width: 12px !important;
+  height: 12px !important;
+  min-width: 12px !important;
+  min-height: 12px !important;
+}
+/* ================================================
+   Force inputs fully rounded
+   ================================================ */
+.input-group input {
+  border-radius: 20px !important;
+}
+/* 1) Fondo animado dinámico (atrás del formulario) */
+body {
+  background: linear-gradient(270deg, #1E3A8A, #3B82F6, #60A5FA);
+  background-size: 600% 600%;
+  animation: gradientAnimation 12s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 2) Inputs redondeados y con el icono “@” visible */
+.input-icon {
+  color: var(--primary);  /* Asegura contraste */
+}
+
+.input-group input {
+  border-radius: 20px;
+  padding-left: 3rem;      /* Espacio para el icono */
+  color: var(--text-dark); /* Texto oscuro dentro */
+}
+
+/* 3) Asegúrate de que @ dentro de la casilla sea el span.input-icon */
+.input-group .input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  pointer-events: none;
+  z-index: 1;
+}
