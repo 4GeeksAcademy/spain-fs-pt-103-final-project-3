@@ -3,9 +3,12 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from sqlalchemy import select
+from .models import Recipes
+import json 
 
 api = Blueprint('api', __name__)
 CORS(api)
@@ -98,11 +101,13 @@ def change_password():
 @jwt_required()
 def save_recipe():
     user_email = get_jwt_identity()
+    user = User.query.filter_by(email = user_email).first()
     data = request.get_json()
     name = data.get("name")
     ingredients = data.get("ingredients")
     instructions = data.get("instructions")
     cook_time = data.get("cook_time")
+  
 
 
     if not all([name, ingredients, instructions]):
@@ -111,12 +116,12 @@ def save_recipe():
     if isinstance(ingredients, list):
         ingredients = json.dumps(ingredients)
 
-    new_recipe = Recipe(
+    new_recipe = Recipes(
         name=name,
         ingredients=ingredients,
         instructions=instructions,
         cook_time=cook_time,
-        user_id=user_email
+        user_id=user.id
     )
 
     db.session.add(new_recipe)
@@ -133,7 +138,7 @@ def save_recipe():
 def get_saved_recipes():
     user_email = get_jwt_identity()
 
-    get_recipe = select(Recipe).where(Recipe.user_email == user_email)
+    get_recipe = select(Recipes).where(Recipes.user_email == user_email)
     result = db.session.execute(get_recipe).scalars().all()
 
     recipes = []

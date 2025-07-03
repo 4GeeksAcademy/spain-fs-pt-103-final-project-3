@@ -17,7 +17,7 @@ class User(db.Model):
 
 
 class Recipes(db.Model):
-    __tablename__ = "recipe"
+    __tablename__ = "recipes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     ingredients: Mapped[str] = mapped_column(String(255), nullable=False)
