@@ -37,6 +37,7 @@ input {
   background-color: rgb(199, 201, 84);
   align-items: center;
   margin-bottom: 10px;
+  box-shadow: 5px 5px 0 0;
 }
 
 label {

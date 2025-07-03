@@ -67,6 +67,14 @@
     margin: 0;
 }
 
+.return-user{
+  background-color: rgb(199, 201, 84);
+  width: 100px;
+  border-radius: 20px;
+  box-shadow: 5px 5px 0 0;
+
+}
+
 @media (max-width: 900px) {
   .recipe-content-idea {
     flex-direction: column;

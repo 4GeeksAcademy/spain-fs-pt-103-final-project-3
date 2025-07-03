@@ -322,16 +322,20 @@ No agregues texto fuera del JSON.
                     <h2 className="ms-5 mb-4">Recetas pensadas para ti:</h2>
                     <ul>
                         {recipes.map((recipe, index) => (
-                            <li key={index} className="col-12 col-md-12 col-lg-12">
+                            <li key={index} 
+                                className="col-12 col-md-12 col-lg-12"
+                                style={{cursor: 'pointer'}}
+                                role="button"
+                                onClick={()=> recipeDetail(recipe)}>
                                 <div className="header-recipe">
                                     <h3>{recipe.name}</h3>
-                                    <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5" style={{ cursor: 'pointer' }} onClick={() => addFavorite(recipe)}></i>
+                                    <i className="fa-solid fa-heart heart text-danger fa-2xl  m-5" style={{ cursor: 'pointer' }} onClick={(e) => {e.stopPropagation(); addFavorite(recipe)}}></i>
                                 </div>
                                 <div className="recipe-body">
                                     {recipe.img && <img src={recipe.img} alt={recipe.name} className="recipe-img" />}
                                     <div className="recipe-info me-4">
-                                        <p>{recipe.time}</p>
-                                        <p>{recipe.dificult}</p>
+                                        <p>⏱️ {recipe.time}</p>
+                                        <p>🔥 {recipe.dificult}</p>
                                     </div>
                                 </div>
 
