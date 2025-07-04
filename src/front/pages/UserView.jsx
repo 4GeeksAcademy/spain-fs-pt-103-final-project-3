@@ -7,9 +7,10 @@ import TextPressure from '../components/TextPressure';
 
 
 
+
 export const UserView = () => {
 
-    const [ingredients, setIngredients] = useState('');
+    const [ingredients, setIngredients] = useState([]);
     const [ingredienteAñadido, setIngredienteAñadido] = useState('');
     const [recipes, setRecipes] = useState([]);
     const [guardados, setGuardados] = useState([]);
@@ -23,61 +24,71 @@ export const UserView = () => {
         dangerouslyAllowBrowser: true
     });
 
+    const generadorId = () => {
+        return 'id-' + Math.random().toString(36).substring(2, 9) + '-' + Date.now();
+    };
+
     useEffect(() => {
-        const savedFav = localStorage.getItem('favoriteRecipes')
-        if (savedFav) {
+
+        const fetchFavorites = async () => {
+
             try {
-                setGuardados(JSON.parse(savedFav))
+                const response = await fetch("/api/recipe");
+                if (!response.ok) throw new Error ("Error al cargar tus favoritos");
+                const data = await response.json();
+                setGuardados(data);
             }
-            catch (err) {
-                localStorage.removeItem('favoriteRecipes')
+            catch (err){
+                setError("Error al cargar tus favoritos");
             }
-        }
+        };
+        fetchFavorites();
     }, []);
 
-    const saveToLocalStorage = (key, data) => {
+    const addFavorite = async (recipe) => {
+        if (guardados.some((fav) => fav.name === recipe.name)){
+            alert("Receta ya guardada en favoritos");
+            return;
+        }
+
+        const favoriteRecipe = {
+            id: generadorId(),
+            name: recipe.name,
+            steps: recipe.steps,
+            dificult: recipe.dificult,
+            time: recipe.time,
+            timeSaved: new Date().toISOString()
+        };
+
         try {
-            localStorage.setItem(key, JSON.stringify(data))
+
+            const response = await fetch("/api/recipe", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(favoriteRecipe)
+            });
+
+            if (!response.ok) throw new Error("Error al guardar favorito");
+            const favoritoGuardado = await response.json();
+            setGuardados((prev) => [...prev, favoritoGuardado]);
         }
-        catch {
-            setError('Error al guardar')
+        catch (err){
+            setError("Error al guardar favorito");
         }
-    }
+    };
 
-    const addFavorite = (recipe) => {
-        const idRecipe = {
-            ...recipe,
-            id: `${recipe.name}-${Date.now()}`,
-            timeSaved: new Date().toISOString(),
-            originalJson: JSON.stringify(recipe)
+    const eliminarFavorito = async (id) => {
+        try{
+            const response = await fetch(`/api/recipe/${id}`, {
+                method: "DELETE"
+            });
+            if (!response.ok) throw new Error("Error al eliminar favorito");
+            setGuardados((prev) => prev.filter((fav) => fav.id !== id));
         }
-
-        setGuardados(prev => {
-            const isFavorited = prev.some(favorite => favorite.name === recipe.name)
-
-            let newFavorites;
-            if (isFavorited) {
-                newFavorites = prev.filter(favorite => favorite.name !== recipe.name)
-
-            }
-            else {
-                newFavorites = [...prev, idRecipe]
-
-            }
-            saveToLocalStorage('favoriteRecipes', newFavorites)
-            window.dispatchEvent(new Event('favoritesUpdate'))
-            return newFavorites
-        })
-    }
-
-    const removeFavorite = (name) => {
-        setGuardados(prev => {
-            const cargaFav = prev.filter(favorite => favorite.name !== name);
-            saveToLocalStorage('favoriteRecipes', cargaFav)
-            return cargaFav;
-        })
-    }
-
+        catch (err){
+            setError("Error al eliminar favorito");
+        }
+    };
 
 
     const addIngredient = (e) => {
@@ -121,9 +132,9 @@ Devuélvelo en un JSON con este formato:
 [
   {
     "name": "Nombre de la receta",
-    "steps": ["Paso 1", "Paso 2", ...]
-    "dificult": "Fácil/Media/Difícil"
-    "time": "45 min"
+    "steps": ["Paso 1", "Paso 2", ...],
+    "dificult": "Fácil/Media/Difícil",
+    "time": "45 min",
   },
     ...
 ]
@@ -224,7 +235,7 @@ No agregues texto fuera del JSON.
                 <div>
                     <h4 className="mt-4 d-flex justify-content-center">Tus Favoritas</h4>
                     {guardados.length === 0 ? (
-                        <p>No has añadido recetas aún</p>) : (
+                        <p className="text-center mt-5">No has añadido recetas aún</p>) : (
                         <ul>
                             {guardados.map((favorite, index) => (
                                 <li key={index} className="favoritedLi mt-4">
@@ -236,7 +247,7 @@ No agregues texto fuera del JSON.
                                             <strong>{favorite.name}</strong>
                                         </div>
                                         <div className="trashFav">
-                                            <i className="fa fa-trash" onClick={() => removeFavorite(favorite.name)}></i>
+                                            <i className="fa fa-trash" onClick={() => eliminarFavorito(favorite.name)}></i>
                                         </div>
                                     </div>
                                 </li>
@@ -266,7 +277,7 @@ No agregues texto fuera del JSON.
 
             <form onSubmit={addIngredient}>
                 <div>
-                    <label className="d-flex justify-content-center">Añade un ingrediente</label>
+                    <label className="d-flex justify-content-center fs-1 fw-medium">Añade un ingrediente</label>
                 </div>
                 <div>
                     <input

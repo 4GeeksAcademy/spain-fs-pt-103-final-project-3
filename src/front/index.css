@@ -1,5 +1,5 @@
 body {
-  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt%3Dais_items_boosted%26w%3D740);
+  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt=ais_hybrid&w=740);
 }
 
 nav {
@@ -22,7 +22,7 @@ nav {
 }
 
 input {
-  width: 300px;
+  width: 400px;
   border-radius: 20px;
   margin-bottom: 10px;
   background-color: rgb(245, 247, 248);
