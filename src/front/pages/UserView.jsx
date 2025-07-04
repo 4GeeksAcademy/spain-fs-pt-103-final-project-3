@@ -33,7 +33,7 @@ export const UserView = () => {
         const fetchFavorites = async () => {
 
             try {
-                const response = await fetch("/api/recipe");
+                const response = await fetch("/api/recipes/saved");
                 if (!response.ok) throw new Error ("Error al cargar tus favoritos");
                 const data = await response.json();
                 setGuardados(data);
@@ -62,8 +62,8 @@ export const UserView = () => {
 
         try {
 
-            const response = await fetch("/api/recipe", {
-                method: "PUT",
+            const response = await fetch("/api/recipes", {
+                method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(favoriteRecipe)
             });
@@ -79,7 +79,7 @@ export const UserView = () => {
 
     const eliminarFavorito = async (id) => {
         try{
-            const response = await fetch(`/api/recipe/${id}`, {
+            const response = await fetch(`/api/recipes/delete/<int:id>`, {
                 method: "DELETE"
             });
             if (!response.ok) throw new Error("Error al eliminar favorito");

@@ -41,7 +41,7 @@ export const Recipe = () => {
             try {
                 let actualRecipe = recipe;
                 if (!actualRecipe && theId) {
-                    const response = await fetch(`/api/recipe/${theId}`);
+                    const response = await fetch("/api/recipes/saved/<int:Id>");
                     if (!response.ok) throw new Error('Receta no encontrada');
 
                     actualRecipe = await response.json();
