@@ -157,7 +157,31 @@ def get_saved_recipes():
 
 
 
-@api.route("/recipes/saved/<int:id>", methods=["DELETE"])
+@api.route("/recipes/saved/<int:id>", methods=["GET"])
+@jwt_required()
+def get_saved_recipe_by_id(id):
+    user_email = get_jwt_identity()
+    
+
+    get_user = select(User).where(User.email == user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
+
+    if user is None:
+        return jsonify({"err": "Usuario no encontrado"}), 404
+
+   
+    get_recipe = select(Recipes).where(Recipes.id == id, Recipes.user_id == user.id)
+    recipe = db.session.execute(get_recipe).scalars().one_or_none()
+
+    if recipe is None:
+        return jsonify({"err": "Receta no encontrada"}), 404
+
+    return jsonify(recipe.serialize()), 200
+
+
+
+
+@api.route("/recipes/delete/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_saved_recipe(id):
     user_email = get_jwt_identity()
