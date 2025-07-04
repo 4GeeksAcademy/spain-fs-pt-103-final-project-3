@@ -1,9 +1,9 @@
-body{
-  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt%3Dais_items_boosted%26w%3D740);
+body {
+  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt=ais_hybrid&w=740);
 }
 
-nav{
-  backdrop-filter: blur(15px);
+nav {
+  backdrop-filter: blur(8px);
   z-index: 1500;
 }
 
@@ -22,9 +22,12 @@ nav{
 }
 
 input {
-  width: 300px;
+  width: 400px;
   border-radius: 20px;
   margin-bottom: 10px;
+  background-color: rgb(245, 247, 248);
+  border: none;
+  box-shadow: 5px 5px 0 0;
 }
 
 .buscador {
@@ -34,11 +37,13 @@ input {
   background-color: rgb(199, 201, 84);
   align-items: center;
   margin-bottom: 10px;
+  box-shadow: 5px 5px 0 0;
 }
 
 label {
   font-size: 30px;
   margin-bottom: 10px;
+  
 }
 
 .userTitle {
@@ -47,7 +52,6 @@ label {
 }
 
 li {
-  border: 1px solid black;
   border-radius: 20px;
   margin-bottom: 10px;
   display: flex;
@@ -55,6 +59,8 @@ li {
   height: 180px;
   width: 700px;
   padding: 10px;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
 }
 
 .header-recipe {
@@ -120,16 +126,147 @@ li {
 
 .sidebarContainer {
   position: fixed;
-  top: 54px;
+  top: 64px;
   left: -320px;
   width: 320px;
   height: calc(100vh - 60px);
   transition: left 0.3s ease;
   z-index: 1200;
   overflow-y: auto;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(8px);
 }
 
 .sidebarContainer.open {
   left: 0;
+}
+
+.favoritedLi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  width: 270px;
+  height: 50px;
+  font-size: 11px;
+}
+
+.favoriteContent{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.starFav{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.textFav{
+  display: flex;
+  justify-content: center;
+  flex: auto;
+  word-break: break-word;
+}
+
+
+.imgFav {
+  border-radius: 50%;
+}
+
+.circular-text {
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 450px;
+  position: relative;
+  height: 450px;
+  font-weight: bold;
+  color: #000000;
+  font-weight: 900;
+  text-align: center;
+  cursor: pointer;
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+}
+
+.circular-text span {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 24px;
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+}
+
+
+.focus-container {
+  position: relative;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.focus-word {
+  position: relative;
+  font-size: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    filter 0.3s ease,
+    color 0.3s ease;
+}
+
+.focus-word.active {
+  filter: blur(0);
+}
+
+.focus-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  box-sizing: content-box;
+  border: none;
+}
+
+.corner {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid var(--border-color, #fff);
+  filter: drop-shadow(0px 0px 4px var(--border-color, #fff));
+  border-radius: 3px;
+  transition: none;
+}
+
+.top-left {
+  top: -10px;
+  left: -10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.top-right {
+  top: -10px;
+  right: -10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bottom-left {
+  bottom: -10px;
+  left: -10px;
+  border-right: none;
+  border-top: none;
+}
+
+.bottom-right {
+  bottom: -10px;
+  right: -10px;
+  border-left: none;
+  border-top: none;
 }
