@@ -121,7 +121,7 @@ def save_recipe():
         ingredients=ingredients,
         instructions=instructions,
         cook_time=cook_time,
-        user_email=user_email 
+        user_id = user.id
     )
 
     db.session.add(new_recipe)
@@ -138,20 +138,20 @@ def save_recipe():
 @jwt_required()
 def get_saved_recipes():
     user_email = get_jwt_identity()
+    get_user = select(User).where(User.email==user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
 
-    get_recipe = select(Recipes).where(Recipes.user_email == user_email)
+    if user is None:
+        return jsonify({"err":"no existe el usuario"})
+    
+
+    get_recipe = select(Recipes).where(Recipes.user_id == user.id)
     result = db.session.execute(get_recipe).scalars().all()
 
-    recipes = []
-    for recipe in result:
-        recipes.append({
-            "id": recipe.id,
-            "name": recipe.name,
-            "ingredients": json.loads(recipe.ingredients),
-            "instructions": recipe.instructions,
-            "cook_time": recipe.cook_time,
-            
-        })
+    recipes = list(map(lambda recipe:recipe.serialize(),result))
+
+
+
 
     return jsonify(recipes), 200
 
@@ -161,8 +161,14 @@ def get_saved_recipes():
 @jwt_required()
 def delete_saved_recipe(id):
     user_email = get_jwt_identity()
+    get_user = select(User).where(User.email==user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
 
-    kill_recipe = select(Recipe).where(Recipe.id == id, Recipe.user_email == user_email)
+    if user is None:
+        return jsonify({"err":"no existe el usuario"})
+    
+
+    kill_recipe = select(Recipes).where(Recipes.id == id, Recipes.user_id == user.id)
     recipe = db.session.execute(kill_recipe).scalar_one_or_none()
 
     if not recipe:
@@ -176,9 +182,3 @@ def delete_saved_recipe(id):
 
 
 
-
-@api.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    user_id = get_jwt_identity()
-    return jsonify({"msg": f"Hola usuario con ID {user_id}"}), 200

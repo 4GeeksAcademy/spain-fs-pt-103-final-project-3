@@ -24,6 +24,13 @@ class Recipes(db.Model):
     name: Mapped[str] = mapped_column(String(120), nullable=False)
     instructions: Mapped[str] = mapped_column(String, nullable=False)
     cook_time: Mapped[int] = mapped_column(nullable=True)
-    # user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user_email: Mapped[str] = mapped_column(String(120), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="recipes")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "instructions" : self.instructions,
+            "cook_time" : self.cook_time
+        }
