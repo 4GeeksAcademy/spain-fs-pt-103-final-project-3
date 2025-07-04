@@ -3,9 +3,12 @@ from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from sqlalchemy import select
+from .models import Recipes
+import json 
 
 api = Blueprint('api', __name__)
 CORS(api)
@@ -98,11 +101,13 @@ def change_password():
 @jwt_required()
 def save_recipe():
     user_email = get_jwt_identity()
+    user = User.query.filter_by(email = user_email).first()
     data = request.get_json()
     name = data.get("name")
     ingredients = data.get("ingredients")
     instructions = data.get("instructions")
     cook_time = data.get("cook_time")
+  
 
 
     if not all([name, ingredients, instructions]):
@@ -111,19 +116,20 @@ def save_recipe():
     if isinstance(ingredients, list):
         ingredients = json.dumps(ingredients)
 
-    new_recipe = Recipe(
+    new_recipe = Recipes(
         name=name,
         ingredients=ingredients,
         instructions=instructions,
         cook_time=cook_time,
-        user_id=user_email
+        user_id = user.id
     )
 
     db.session.add(new_recipe)
     db.session.commit()
 
-    return jsonify({"msg": "Receta guardada"}), 201
-
+    return jsonify({
+    "msg": "Receta guardada",
+    "recipe_id": new_recipe.id}), 201
 
 
 
@@ -132,31 +138,61 @@ def save_recipe():
 @jwt_required()
 def get_saved_recipes():
     user_email = get_jwt_identity()
+    get_user = select(User).where(User.email==user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
 
-    get_recipe = select(Recipe).where(Recipe.user_email == user_email)
+    if user is None:
+        return jsonify({"err":"no existe el usuario"})
+    
+
+    get_recipe = select(Recipes).where(Recipes.user_id == user.id)
     result = db.session.execute(get_recipe).scalars().all()
 
-    recipes = []
-    for recipe in result:
-        recipes.append({
-            "id": recipe.id,
-            "name": recipe.name,
-            "ingredients": json.loads(recipe.ingredients),
-            "instructions": recipe.instructions,
-            "cook_time": recipe.cook_time,
-            
-        })
+    recipes = list(map(lambda recipe:recipe.serialize(),result))
+
+
+
 
     return jsonify(recipes), 200
 
 
 
-@api.route("/recipes/saved/<int:id>", methods=["DELETE"])
+@api.route("/recipes/saved/<int:id>", methods=["GET"])
+@jwt_required()
+def get_saved_recipe_by_id(id):
+    user_email = get_jwt_identity()
+    
+
+    get_user = select(User).where(User.email == user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
+
+    if user is None:
+        return jsonify({"err": "Usuario no encontrado"}), 404
+
+   
+    get_recipe = select(Recipes).where(Recipes.id == id, Recipes.user_id == user.id)
+    recipe = db.session.execute(get_recipe).scalars().one_or_none()
+
+    if recipe is None:
+        return jsonify({"err": "Receta no encontrada"}), 404
+
+    return jsonify(recipe.serialize()), 200
+
+
+
+
+@api.route("/recipes/delete/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_saved_recipe(id):
     user_email = get_jwt_identity()
+    get_user = select(User).where(User.email==user_email)
+    user = db.session.execute(get_user).scalars().one_or_none()
 
-    kill_recipe = select(Recipe).where(Recipe.id == id, Recipe.user_email == user_email)
+    if user is None:
+        return jsonify({"err":"no existe el usuario"})
+    
+
+    kill_recipe = select(Recipes).where(Recipes.id == id, Recipes.user_id == user.id)
     recipe = db.session.execute(kill_recipe).scalar_one_or_none()
 
     if not recipe:
@@ -170,9 +206,3 @@ def delete_saved_recipe(id):
 
 
 
-
-@api.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    user_id = get_jwt_identity()
-    return jsonify({"msg": f"Hola usuario con ID {user_id}"}), 200
