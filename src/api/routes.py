@@ -121,14 +121,15 @@ def save_recipe():
         ingredients=ingredients,
         instructions=instructions,
         cook_time=cook_time,
-        user_id=user.id
+        user_email=user_email 
     )
 
     db.session.add(new_recipe)
     db.session.commit()
 
-    return jsonify({"msg": "Receta guardada"}), 201
-
+    return jsonify({
+    "msg": "Receta guardada",
+    "recipe_id": new_recipe.id}), 201
 
 
 
