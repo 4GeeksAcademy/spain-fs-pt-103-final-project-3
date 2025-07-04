@@ -13,11 +13,11 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), default=True, nullable=False)
 
     # Relación uno-a-muchos con Recipes
-    recipes: Mapped[list["Recipe"]] = relationship(back_populates="user")
+    recipes: Mapped[list["Recipes"]] = relationship(back_populates="user")
 
 
 class Recipes(db.Model):
-    __tablename__ = "recipe"
+    __tablename__ = "recipes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     ingredients: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -26,3 +26,11 @@ class Recipes(db.Model):
     cook_time: Mapped[int] = mapped_column(nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="recipes")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "instructions" : self.instructions,
+            "cook_time" : self.cook_time
+        }
