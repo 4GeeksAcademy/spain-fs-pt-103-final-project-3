@@ -1,0 +1,364 @@
+/* ==================================================
+   1) RESET GLOBAL & BOX-SIZING
+   ==================================================*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================================================
+   2) html, body y #root al 100%
+   ==================================================*/
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==================================================
+   3) VARIABLES DE TEMA: tonos crema, mostaza y marrón
+   ==================================================*/
+:root {
+  --font-main: "Montserrat", sans-serif;
+
+  /* Textos */
+  --primary: #3a2e2a;
+  --text-dark: #3a2e2a;
+  --text-light: #ffffff;
+
+  /* Acentos */
+  --secondary: #d4a373;
+  --accent: #78844a;
+
+  /* Fondo */
+  --bg-solid: #f0e0c4;
+  --bg-pattern: url("/kitchen-pattern.avif");
+
+  /* Cristal y tarjeta */
+  --overlay-opacity: 0.85;
+  --card-bg: rgba(255, 255, 255, var(--overlay-opacity));
+  --card-border: rgba(58, 46, 42, 0.15);
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Inputs */
+  --input-bg: #fffdf8;
+  --input-border: #d2b48c;
+  --input-error: #c14444;
+
+  /* Botón */
+  --btn-gradient: linear-gradient(135deg, #d4a373, #c9975b);
+}
+
+/* ==================================================
+   4) OVERLAY SEMITRANSPARENTE SOBRE PATRÓN
+   ==================================================*/
+body {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-main);
+  background-color: var(--bg-solid);
+  background-image: var(--bg-pattern);
+  background-repeat: repeat;
+  background-size: auto 200px;
+  color: var(--primary);
+  overflow: hidden;
+}
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(240, 224, 196, 0.6);
+  z-index: 0;
+}
+
+/* ==================================================
+   5) Ocultar navbar y footer
+   ==================================================*/
+.navbar,
+.sticky-top,
+.footer {
+  display: none !important;
+}
+
+/* ==================================================
+   6) WRAPPER CENTRADO
+   ==================================================*/
+.page-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ==================================================
+   7) TARJETA LIQUID GLASS CENTRAL
+   ==================================================*/
+.auth-card {
+  position: relative;
+  z-index: 1;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 16px var(--card-shadow);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  width: 360px;
+  max-width: 90%;
+  animation: cardFadeIn 0.8s both;
+  text-align: center;
+}
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==================================================
+   8) TÍTULO
+   ==================================================*/
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 2rem;
+}
+
+/* ==================================================
+   9) INPUT-GROUP COMO CAJA REDONDEADA
+   ==================================================*/
+.auth-card .input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  width: 100%; /* <-- ocupa todo el ancho */
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+
+  display: flex;
+  align-items: center;
+}
+
+/* iconos dentro del grupo */
+.auth-card .input-icon,
+.auth-card .toggle-icon {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  z-index: 1;
+}
+
+/* input transparente, sin borde */
+.auth-card .input-group input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-dark) !important;
+  margin-left: 1.2rem; /* <-- separación icono ↔ texto */
+}
+
+/* placeholder más sutil */
+.auth-card .input-group input::placeholder {
+  color: rgba(58, 46, 42, 0.4);
+}
+
+/* foco en todo el grupo */
+.auth-card .input-group:focus-within {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.3);
+}
+
+/* quitar el outline negro del propio <input> */
+.auth-card .input-group input:focus {
+  outline: none !important;
+}
+
+/* override del autofill azul de Chrome */
+.auth-card .input-group input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+  -webkit-text-fill-color: var(--text-dark) !important;
+}
+
+/* error */
+.auth-card .input-group input.error {
+  border-color: var(--input-error) !important;
+}
+
+/* ==================================================
+   10) MENSAJE DE ERROR
+   ==================================================*/
+.auth-card .error-message {
+  color: var(--input-error);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  text-align: left;
+}
+
+/* ==================================================
+   11) BOTÓN PRINCIPAL
+   ==================================================*/
+.btn-gradient {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1.25rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--btn-gradient);
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+}
+
+/* ==================================================
+   12) PIE DE FORMULARIO
+   ==================================================*/
+.auth-footer {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+.auth-footer a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================
+   13) AJUSTES RESPONSIVE
+   ==================================================*/
+@media (max-width: 400px) {
+  .auth-card {
+    padding: 1rem;
+  }
+}
+@media (min-width: 1200px) {
+  .auth-card {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+@media (min-width: 1600px) {
+  body {
+    background-size: auto 300px;
+  }
+}
+
+/* ==================================================
+   14) PasswordStrengthMeter (components/PasswordStrengthMeter.css)
+   ==================================================*/
+.password-strength-meter {
+  display: flex;
+  margin: 8px 0;
+}
+.password-strength-bar {
+  flex: 1;
+  height: 6px;
+  margin: 0 2px;
+  background: #e0e0e0;
+  border-radius: 2px;
+}
+.password-strength-bar.active {
+  background: #4caf50;
+}
+/* reemplaza o añade esto al final de tu Auth.css */
+
+/* ==================================================
+   INPUT-GROUP COMO CAJA REDONDEADA (con gap)
+   ==================================================*/
+.auth-card .input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+
+  display: flex;
+  align-items: center;
+
+  gap: 0.75rem; /* <-- aquí defines el espacio entre icono y texto */
+}
+
+/* el propio input ya no necesita margin-left: */
+.auth-card .input-group input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-dark) !important;
+}
+
+/* para que no aparezca ese recuadro negro al hacer focus, quita el outline
+   y aplica el estilo al contenedor con :focus-within */
+.auth-card .input-group input:focus {
+  outline: none !important;
+}
+.auth-card .input-group:focus-within {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.3);
+}
+/* ==================================================
+   AJUSTES FINALES
+   ==================================================*/
+
+/* 1) Limitar el ancho de la tarjeta */
+.auth-card {
+  min-width: 320px;
+  max-width: 400px;
+}
+
+/* 2) Animación más suave */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Aplica la nueva curva y duración */
+.auth-card {
+  animation: cardFadeIn 0.6s ease-out both;
+}
+
+/* 3) Hover más definido en el botón */
+.btn-gradient:hover {
+  /* oscurece ligeramente el degradado al pasar el ratón */
+  filter: brightness(0.95);
+}
+
+/* 4) Placeholder aún más suave */
+.auth-card .input-group input::placeholder {
+  color: rgba(58, 46, 42, 0.3);
+}
