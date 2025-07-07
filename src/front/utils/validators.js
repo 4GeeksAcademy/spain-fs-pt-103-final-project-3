@@ -1,9 +1,18 @@
+// src/front/utils/validators.js
+
+/**
+ * Valida formato de email.
+ */
 export function isValidEmail(email) {
-  const regex = /^[\w.-]+@[\w.-]+\.\w+$/;
-  return regex.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export function isStrongPassword(password) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-  return regex.test(password);
+/**
+ * Valida que la contraseña tenga al menos 8 caracteres,
+ * contenga mayúscula, minúscula y número.
+ */
+export function isStrongPassword(pwd) {
+  return (
+    pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd)
+  );
 }

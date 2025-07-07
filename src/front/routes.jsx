@@ -3,15 +3,12 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Navigate
 } from "react-router-dom";
 
 import { Layout } from "./pages/Layout";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
 import { UserView } from "./pages/UserView"
 import { Recipe } from "./pages/Recipe"
 
@@ -19,7 +16,7 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>}>
       {/* Al entrar a “/” redirige automáticamente a “/login” */}
-      <Route index element={<Navigate to="/login" replace />} />
+      {/* <Route index element={<Navigate to="/login" replace />} /> */}
 
       {/* rutas públicas */}
       <Route path="login" element={<Login />} />
@@ -27,8 +24,7 @@ export const router = createBrowserRouter(
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
-      <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
-      <Route path="/demo" element={<Demo />} />
+
       <Route path="/user/:theId" element={<UserView />} />
       <Route path="/recipe" element={<Recipe />} />
       <Route path="/recipe/:theId" element={<Recipe />} />
