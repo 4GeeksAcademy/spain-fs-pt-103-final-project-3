@@ -1,11 +1,14 @@
-// Import necessary components and functions from react-router-dom.
-
+// src/front/routes.jsx
 import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  Navigate
 } from "react-router-dom";
+
 import { Layout } from "./pages/Layout";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
@@ -13,23 +16,22 @@ import { UserView } from "./pages/UserView"
 import { Recipe } from "./pages/Recipe"
 
 export const router = createBrowserRouter(
-    createRoutesFromElements(
-    // CreateRoutesFromElements function allows you to build route elements declaratively.
-    // Create your routes here, if you want to keep the Navbar and Footer in all views, add your new routes inside the containing Route.
-    // Root, on the contrary, create a sister Route, if you have doubts, try it!
-    // Note: keep in mind that errorElement will be the default page when you don't get a route, customize that page to make your project more attractive.
-    // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>}>
+      {/* Al entrar a “/” redirige automáticamente a “/login” */}
+      <Route index element={<Navigate to="/login" replace />} />
 
-      // Root Route: All navigation will start from here.
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+      {/* rutas públicas */}
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
 
-        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
-        <Route path="/user/:theId" element={<UserView />} />
-        <Route path="/recipe" element={<Recipe />} />
-        <Route path="/recipe/:theId" element={<Recipe />} />
-      </Route>
-    )
+      {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
+      <Route path="/" element={<Home />} />
+      <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
+      <Route path="/demo" element={<Demo />} />
+      <Route path="/user/:theId" element={<UserView />} />
+      <Route path="/recipe" element={<Recipe />} />
+      <Route path="/recipe/:theId" element={<Recipe />} />
+    </Route>
+  )
 );
