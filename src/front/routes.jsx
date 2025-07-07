@@ -11,6 +11,7 @@ import { Register } from "./pages/Register";
 import { Home } from "./pages/Home";
 import { UserView } from "./pages/UserView"
 import { Recipe } from "./pages/Recipe"
+import { Private } from "./pages/Private"
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,9 +26,23 @@ export const router = createBrowserRouter(
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
 
-      <Route path="/user/:theId" element={<UserView />} />
-      <Route path="/recipe" element={<Recipe />} />
-      <Route path="/recipe/:theId" element={<Recipe />} />
+      <Route path="/user/:theId" element={
+        <Private>
+          <UserView />
+        </Private>
+
+      }
+      />
+      <Route path="/recipe" element={
+        <Private>
+          <Recipe />
+        </Private>
+      } />
+      <Route path="/recipe/:theId" element={
+        <Private>
+          <Recipe />
+        </Private>
+      } />
     </Route>
   )
 );

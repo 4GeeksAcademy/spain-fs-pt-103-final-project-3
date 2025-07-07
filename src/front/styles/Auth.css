@@ -81,11 +81,11 @@ body::before {
 /* ==================================================
    5) Ocultar navbar y footer
    ==================================================*/
-.navbar,
+/* .navbar,
 .sticky-top,
 .footer {
   display: none !important;
-}
+} */
 
 /* ==================================================
    6) WRAPPER CENTRADO
