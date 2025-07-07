@@ -27,7 +27,7 @@ export function Login() {
     try {
       const response = await loginUser({ email, password });
       localStorage.setItem("access_token",response.access_token)
-      navigate('/')
+      navigate('/user')
     } catch (err) {
       setErrors({ form: err.response?.data?.msg || err.message })
     }
