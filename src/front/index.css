@@ -1,376 +1,272 @@
-/* ==================================================
-   1) RESET GLOBAL & BOX-SIZING
-   ================================================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* ==================================================
-   2) html, body y #root al 100%
-   ================================================== */
-html, body, #root {
-  width: 100%;
-  height: 100%;
-}
-
-/* ==================================================
-   3) VARIABLES DE TEMA: paleta verde/azul
-   ================================================== */
-:root {
-  --navbar-height:   120px;
-  --footer-height:   60px;
-  --font-main:       'Montserrat', sans-serif;
-
-  --primary:         #2a9d8f; /* teal */
-  --secondary:       #264653; /* dark teal */
-  --accent:          #e9c46a; /* amarillo */
-  --text-color:      #fff;
-
-  --overlay-color:   rgba(0, 0, 0, 0.4);
-
-  --input-bg:        rgba(255, 255, 255, 0.8);
-  --input-border:    rgba(0, 0, 0, 0.1);
-
-  --btn-gradient:    linear-gradient(135deg, #2a9d8f, #56c596);
-  --link-color:      var(--primary);
-  --link-hover:      #1f7a6e;
-}
-
-/* ==================================================
-   4) BODY & OVERLAY
-   ================================================== */
 body {
+  background-image: url(https://img.freepik.com/vector-gratis/diseno-patron-cocina_1284-545.jpg?semt=ais_hybrid&w=740);
+}
+
+nav {
+  backdrop-filter: blur(8px);
+  z-index: 1500;
+}
+
+.userContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.formIngredients {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-main);
-  color: var(--text-color);
-  background: url('/bg-pattern.jpg') center/cover fixed no-repeat;
-  position: relative;
-  overflow-x: hidden; /* evita scroll horizontal */
+  align-items: center;
+  text-align: center;
+  margin: 10px;
 }
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--overlay-color);
-  z-index: 0;
+
+input {
+  width: 400px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  background-color: rgb(245, 247, 248);
+  border: none;
+  box-shadow: 5px 5px 0 0;
 }
-#root {
-  flex: 1 0 auto;
+
+.buscador {
+  border-radius: 20px;
+  width: 200px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(199, 201, 84);
+  align-items: center;
+  margin-bottom: 10px;
+  box-shadow: 5px 5px 0 0;
+}
+
+label {
+  font-size: 30px;
+  margin-bottom: 10px;
+  
+}
+
+.userTitle {
+  font-size: 50px;
+  margin-top: 20px;
+}
+
+li {
+  border-radius: 20px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  z-index: 1;
+  height: 180px;
+  width: 700px;
+  padding: 10px;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
 }
 
-/* ==================================================
-   5) NAVBAR “GLASS” + ANIMACIÓN
-   ================================================== */
-.navbar,
-.sticky-top {
-  background: rgba(255,255,255,0.10) !important;
-  backdrop-filter: blur(8px);
-  box-shadow: none !important;
-  height: var(--navbar-height) !important;
-  animation: fadeInDown 0.6s ease both;
-}
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.navbar .container {
+.header-recipe {
   display: flex;
+  justify-content: space-between;
+  height: 50px;
+  padding: 5px;
+  margin-right: 5px;
   align-items: center;
-  height: 100%;
 }
 
-/* ==================================================
-   6) BRAND (LOGO + TEXTO)
-   ================================================== */
-.navbar-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent !important;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-}
-.brand-logo {
-  width: 100px;
-  height: auto;
-  object-fit: contain;
-  background: transparent;
-}
-.brand-text {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--text-color);
-}
-
-/* ==================================================
-   7) PÁGINA CENTRAL + espacio para navbar/footer
-   ================================================== */
-.page-content {
-  flex: 1 0 auto;
+.recipe-body {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+  font-weight: bolder;
+  font-size: 20px;
 }
 
-/* ==================================================
-   8) FOOTER “GLASS” + ANIMACIÓN
-   ================================================== */
-.footer {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: var(--footer-height);
-  background: rgba(255,255,255,0.10);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-  animation: fadeInUp 0.6s ease both;
-}
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.footer small {
-  color: var(--text-color);
-  font-size: 0.875rem;
-}
-.footer a {
-  margin: 0 0.5rem;
-  color: var(--text-color);
-  font-weight: 500;
-}
-.footer a:hover {
-  color: var(--link-hover);
-}
-
-/* ==================================================
-   9) TARJETA COMÚN (Login + Register)
-   ================================================== */
-.auth-card {
-  background: rgba(255,255,255,0.10);
-  backdrop-filter: blur(8px);
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 2rem;
-  max-width: 700px;
-  width: 90vw;
-}
-
-/* ==================================================
-  10) TÍTULO DE LA TARJETA
-   ================================================== */
-.auth-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-/* ==================================================
-  11) INPUTS CON ICONO
-   ================================================== */
-.input-group {
-  position: relative;
-  margin-bottom: 1rem;
-}
-.input-icon {
-  position: absolute;
-  top: 50%;
-  left: 1rem;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  color: rgba(0,0,0,0.4);
-  pointer-events: none;
-  z-index: 1;
-}
-.input-group input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  padding-left: 2.8rem;
-  border-radius: 8px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  font-size: 1rem;
-  outline: none;
-}
-
-/* ==================================================
-  12) BOTÓN GRADIENTE
-   ================================================== */
-.btn-gradient {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  border: none;
-  border-radius: 50px;
-  background: var(--btn-gradient);
-  color: #fff;
-  font-weight: 500;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: opacity 0.3s, transform 0.3s;
-}
-.btn-gradient:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
-}
-
-/* ==================================================
-  13) ENLACE ABAJO DEL BOTÓN
-   ================================================== */
-.auth-footer {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-}
-.auth-footer a {
-  color: var(--link-hover);
-  font-weight: 600;
-}
-.auth-footer a:hover {
-  text-decoration: underline;
-}
-
-/* ==================================================
-  14) ADAPTACIÓN MÓVIL
-   ================================================== */
-@media (max-width: 576px) {
-  .auth-card {
-    padding: 1.5rem;
-  }
-}
-
-/* ==================================================
-  15) ICONO DE VISIBILIDAD (OJO)
-   ================================================== */
-.toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: rgba(0,0,0,0.4);
-  font-size: 1.2rem;
-  z-index: 1;
-}
-
-/* ==================================================
-  16) MEDIDOR DE FUERZA DE CONTRASEÑA
-   ================================================== */
-.password-strength {
-  height: 6px;
-  width: 100%;
-  margin-top: 0.25rem;
-  border-radius: 4px;
-  background-color: rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-.password-strength > div {
-  height: 100%;
-  transition: width 0.3s ease;
-  border-radius: 4px;
-}
-.password-strength-label {
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
-  color: var(--text-color);
-}
-
-/* ==================================================
-  17) TARJETA DE INGREDIENTE (IngredientCard)
-   ================================================== */
-.ingredient-card {
-  width: 120px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, border 0.2s;
-  border: 2px solid transparent;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background: #fff;
-}
-.ingredient-card img {
-  width: 100%;
+.recipe-img {
   height: 100px;
-  object-fit: cover;
-  background: #e9ecef;
-}
-.ingredient-card .label {
-  padding: 0.5rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #333;
-}
-.ingredient-card:hover {
-  transform: scale(1.04);
-  border-color: var(--primary);
-  box-shadow: 0 4px 8px rgba(0,128,0,0.2);
-}
-.ingredient-card.selected {
-  animation: pop 0.3s ease both;
-  border-color: var(--primary);
-}
-@keyframes pop {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  width: 100px;
+  border-radius: 50%;
 }
 
-/* ==================================================
-   18) RECIPE CARD
-   ================================================== */
-.recipe-card {
-  background: rgba(255,255,255,0.10);
+.ingrediente {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 100px;
+  height: 30px;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
+
+.listadoIngredientes {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 600px;
+}
+
+.sidebarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 60px;
+  border-radius: 0 20px 20px 0;
+  z-index: 1300;
+  left: 0;
+  top: 50%;
+  background-color: rgb(189, 40, 20);
+  transition: left 0.3s ease;
+}
+
+.sidebarButton.moved {
+  left: 320px;
+  transform: translateY(-50%);
+}
+
+.sidebarContainer {
+  position: fixed;
+  top: 64px;
+  left: -320px;
+  width: 320px;
+  height: calc(100vh - 60px);
+  transition: left 0.3s ease;
+  z-index: 1200;
+  overflow-y: auto;
   backdrop-filter: blur(8px);
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;
-  width: 250px;
-  margin: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.recipe-card img {
+.sidebarContainer.open {
+  left: 0;
+}
+
+.favoritedLi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  width: 270px;
+  height: 50px;
+  font-size: 11px;
+}
+
+.favoriteContent{
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
+  height: 100%;
 }
 
-.recipe-card h3 {
-  font-size: 1.1rem;
-  margin: 0.5rem 0;
+.starFav{
+  display: flex;
+  justify-content: flex-start;
 }
 
-.recipe-card p {
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+.textFav{
+  display: flex;
+  justify-content: center;
+  flex: auto;
+  word-break: break-word;
 }
 
-/* Usa la misma clase .btn que en otros componentes */
-.btn {
+
+.imgFav {
+  border-radius: 50%;
+}
+
+.circular-text {
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 450px;
+  position: relative;
+  height: 450px;
+  font-weight: bold;
+  color: #000000;
+  font-weight: 900;
+  text-align: center;
+  cursor: pointer;
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+}
+
+.circular-text span {
+  position: absolute;
   display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  background: var(--btn-gradient);
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: opacity 0.3s, transform 0.3s;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 24px;
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1);
 }
 
-.btn:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+
+.focus-container {
+  position: relative;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.focus-word {
+  position: relative;
+  font-size: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    filter 0.3s ease,
+    color 0.3s ease;
+}
+
+.focus-word.active {
+  filter: blur(0);
+}
+
+.focus-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  box-sizing: content-box;
+  border: none;
+}
+
+.corner {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid var(--border-color, #fff);
+  filter: drop-shadow(0px 0px 4px var(--border-color, #fff));
+  border-radius: 3px;
+  transition: none;
+}
+
+.top-left {
+  top: -10px;
+  left: -10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.top-right {
+  top: -10px;
+  right: -10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bottom-left {
+  bottom: -10px;
+  left: -10px;
+  border-right: none;
+  border-top: none;
+}
+
+.bottom-right {
+  bottom: -10px;
+  right: -10px;
+  border-left: none;
+  border-top: none;
 }
