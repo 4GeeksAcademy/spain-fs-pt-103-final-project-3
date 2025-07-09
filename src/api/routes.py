@@ -104,13 +104,14 @@ def save_recipe():
     user = User.query.filter_by(email = user_email).first()
     data = request.get_json()
     name = data.get("name")
-    ingredients = data.get("ingredients")
+    ingredients = data.get("ingredients", "")
     instructions = data.get("instructions")
     cook_time = data.get("cook_time")
+    dificult = data.get("dificult")
   
 
 
-    if not all([name, ingredients, instructions]):
+    if not all([name, instructions]):
         return jsonify({"msg": "Faltan campos obligatorios"}), 400
 
     if isinstance(ingredients, list):
@@ -118,9 +119,10 @@ def save_recipe():
 
     new_recipe = Recipes(
         name=name,
-        ingredients=ingredients,
         instructions=instructions,
+        ingredients=ingredients,
         cook_time=cook_time,
+        dificult=dificult,
         user_id = user.id
     )
 
@@ -140,6 +142,7 @@ def get_saved_recipes():
     user_email = get_jwt_identity()
     get_user = select(User).where(User.email==user_email)
     user = db.session.execute(get_user).scalars().one_or_none()
+    print(user, user_email)
 
     if user is None:
         return jsonify({"err":"no existe el usuario"})
@@ -149,6 +152,7 @@ def get_saved_recipes():
     result = db.session.execute(get_recipe).scalars().all()
 
     recipes = list(map(lambda recipe:recipe.serialize(),result))
+    print(recipes)
 
 
 

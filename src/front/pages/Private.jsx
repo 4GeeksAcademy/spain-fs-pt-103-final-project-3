@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const Private = ({children}) => {
     const token = localStorage.getItem("access_token");

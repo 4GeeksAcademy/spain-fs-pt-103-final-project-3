@@ -12,6 +12,7 @@ export const Recipe = () => {
     const [loading, setLoading] = useState(!theId && !location.state.recipe);
     const [error, setError] = useState('');
     const [img, setImg] = useState('');
+    
 
     const client = new OpenAI({
         apiKey: import.meta.env.VITE_API_KEY,
@@ -19,48 +20,25 @@ export const Recipe = () => {
     });
 
 
-    const generateImg = async (recipeName) => {
-        try {
-            const imageResponse = await client.images.generate({
-                model: "dall-e-2",
-                prompt: `Deliciosa ${recipeName}, fotografía de la comida, luz profesional, apetitosa y sobre mesa de madera `,
-                n: 1,
-                size: "535x536"
-            });
-            return imageResponse.data[0].url;
-        }
-        catch (err) {
-            return null;
-        }
-    };
-
-    useEffect(() => {
-        const fetchRecipeAndImg = async () => {
-            setLoading(true);
-
+    useEffect(()=>{
+        const generateImg = async (recipeName) => {
             try {
-                let actualRecipe = recipe;
-                if (!actualRecipe && theId) {
-                    const response = await fetch("/api/recipes/saved/<int:Id>");
-                    if (!response.ok) throw new Error('Receta no encontrada');
-
-                    actualRecipe = await response.json();
-                    setRecipe(actualRecipe);
-                }
-                if (actualRecipe) {
-                    const img = generateImg(actualRecipe.name);
-                    setImg(img);
-                }
+                const imageResponse = await client.images.generate({
+                    model: "dall-e-2",
+                    prompt: `Deliciosa ${recipeName}, fotografía de la comida, luz profesional, apetitosa y sobre mesa de madera `,
+                    n: 1,
+                    size: "512x512"
+                });
+                setImg(imageResponse.data[0].url);
+                return imageResponse.data[0].url;
             }
             catch (err) {
-                setError('Rceta no encontrada.');
+                return null;
             }
-            finally {
-                setLoading(false);
-            }
-        }
-    }, [theId, recipe]);
-
+        };
+        generateImg(recipe.name);
+      
+   },[])
     if (loading) {
         return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 300 }}>
             <lottie-player
@@ -73,7 +51,7 @@ export const Recipe = () => {
             ></lottie-player>
         </div>
     }
-
+    console.log(img);
     return (
         <div className="container-recipe">
             <h1 className="title-recipe">{recipe.name}</h1>
@@ -97,14 +75,14 @@ export const Recipe = () => {
 
 
                     <div className="recipe-information">
-                        <p>⏱️ {recipe.time}</p>
+                        <p>⏱️ {recipe.cook_time}</p>
                         <p>🔥 {recipe.dificult}</p>
                     </div>
                 </div>
                 <div className="recipe-steps">
                     <h3 className="ms-4">Empecemos a crear:</h3>
                     <ol className="recipe-li">
-                        {recipe.steps.map((step, index) => (
+                        {recipe.instructions.map((step, index) => (
                             <li key={index}>{step}</li>
                         ))}
                     </ol>

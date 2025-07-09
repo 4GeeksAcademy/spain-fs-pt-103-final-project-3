@@ -68,13 +68,12 @@ body {
   background-repeat: repeat;
   background-size: auto 200px;
   color: var(--primary);
-  overflow: hidden;
+  
 }
 body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(240, 224, 196, 0.6);
   z-index: 0;
 }
 

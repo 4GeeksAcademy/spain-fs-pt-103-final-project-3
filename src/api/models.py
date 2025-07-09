@@ -20,9 +20,10 @@ class Recipes(db.Model):
     __tablename__ = "recipes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    ingredients: Mapped[str] = mapped_column(String(255), nullable=False)
+    ingredients: Mapped[str] = mapped_column(String(255), nullable=True)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
     instructions: Mapped[str] = mapped_column(String, nullable=False)
+    dificult: Mapped[str] = mapped_column(String(50), nullable=True)
     cook_time: Mapped[int] = mapped_column(nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="recipes")
@@ -32,5 +33,6 @@ class Recipes(db.Model):
             "id": self.id,
             "name": self.name,
             "instructions" : self.instructions,
-            "cook_time" : self.cook_time
+            "cook_time" : self.cook_time,
+            "dificult": self.dificult
         }

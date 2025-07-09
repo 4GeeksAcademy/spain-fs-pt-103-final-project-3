@@ -7,10 +7,17 @@ nav {
   z-index: 1500;
 }
 
+footer{
+  position: relative;
+  z-index: 90;
+}
+
 .userContainer {
   display: flex;
   align-items: center;
   flex-direction: column;
+  z-index: 1600;
+  position: relative;
 }
 
 .formIngredients {
@@ -19,15 +26,18 @@ nav {
   align-items: center;
   text-align: center;
   margin: 10px;
+  z-index: 1600;
 }
 
-input {
+.input-ingredients {
   width: 400px;
   border-radius: 20px;
   margin-bottom: 10px;
   background-color: rgb(245, 247, 248);
   border: none;
   box-shadow: 5px 5px 0 0;
+  text-align: center;
+  outline: none;
 }
 
 .buscador {
@@ -43,6 +53,7 @@ input {
 label {
   font-size: 30px;
   margin-bottom: 10px;
+  
   
 }
 
@@ -63,6 +74,11 @@ li {
   backdrop-filter: blur(10px);
 }
 
+.container-recipe{
+  position: relative;
+  z-index: 1600;
+}
+
 .header-recipe {
   display: flex;
   justify-content: space-between;
@@ -78,6 +94,7 @@ li {
   align-items: center;
   font-weight: bolder;
   font-size: 20px;
+  
 }
 
 .recipe-img {
