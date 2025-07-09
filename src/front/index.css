@@ -29,7 +29,7 @@ footer{
   z-index: 1600;
 }
 
-input {
+.input-ingredients {
   width: 400px;
   border-radius: 20px;
   margin-bottom: 10px;
