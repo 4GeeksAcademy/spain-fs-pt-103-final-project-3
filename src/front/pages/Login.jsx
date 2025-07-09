@@ -28,6 +28,9 @@ export function Login() {
       const response = await loginUser({ email, password });
       localStorage.setItem("access_token",response.access_token)
       navigate('/user')
+      setTimeout(() => {
+        window.location.reload();
+      },1);
     } catch (err) {
       setErrors({ form: err.response?.data?.msg || err.message })
     }
