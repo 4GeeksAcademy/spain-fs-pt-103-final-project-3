@@ -143,12 +143,12 @@ export const UserView = () => {
 
     //prompt que pasamos a la IA para que genere la receta 
     const prompt = `
-Genera 3 recetas usando un lenguaje de chef profesional, usando solo y unicamente (sin añadir ingredientes extra) estos ingredientes: ${ingredients}, damos por hecho que disponemos de aceite, sal y pimienta.
+Genera 1 recetas usando un lenguaje de chef profesional, usando solo y unicamente (sin añadir ingredientes extra) estos ingredientes: ${ingredients}, damos por hecho que disponemos de aceite, sal y pimienta.
 Para cada receta, incluye:
 - El nombre de la receta ("name")
 - Un array con el paso a paso muy bien desarrollado y extenso donde indique que utensilios debo usar ("steps")
 - Indica la dificultad para realizarla("dificult")
-- Tiempo de elaboración ("time")
+- Tiempo de elaboración, siempre en minutos ("time")
 Devuélvelo en un JSON con este formato:
 [
   {
@@ -268,7 +268,7 @@ No agregues texto fuera del JSON.
                                             <strong>{favorite.name}</strong>
                                         </div>
                                         <div className="trashFav">
-                                            <i className="fa fa-trash" onClick={(e) => { e.stopPropagation(); eliminarFavorito(favorite.id) }}></i>
+                                            <i className="fa fa-trash fa-xl" onClick={(e) => { e.stopPropagation(); eliminarFavorito(favorite.id) }}></i>
                                         </div>
                                     </div>
                                 </li>
@@ -281,9 +281,9 @@ No agregues texto fuera del JSON.
             </div>
 
 
-            <div className="mt-5 mb-3" style={{ position: 'relative', height: '100px', width: '300px' }}>
+            <div className="mt-5 mb-3" style={{ position: 'relative', height: '100px', width: '400px' }}>
                 <TextPressure
-                    text="LET'S COOK"
+                    text="LET'S COOOOOK!!"
                     flex={true}
                     alpha={false}
                     stroke={false}
@@ -292,7 +292,7 @@ No agregues texto fuera del JSON.
                     italic={true}
                     textColor="black"
                     strokeColor="#ff0000"
-                    minFontSize={58}
+                    minFontSize={56}
                 />
             </div>
 
@@ -356,7 +356,7 @@ No agregues texto fuera del JSON.
                     <ul>
                         {recipes.map((recipe, index) => (
                             <li key={index}
-                                className="col-12 col-md-12 col-lg-12"
+                                className="ingredients-li col-12 col-md-12 col-lg-12"
                                 style={{ cursor: 'pointer' }}
                                 role="button"
                                 onClick={() => recipeDetail(recipe)}>
