@@ -83,7 +83,7 @@ export const Recipe = () => {
                     <h3 className="ms-4">Empecemos a crear:</h3>
                     <ol className="recipe-li">
                         {recipe.instructions.map((step, index) => (
-                            <li key={index}>{step}</li>
+                            <li key={index} style={{height: "110px"}}>{step}</li>
                         ))}
                     </ol>
                 </div>
