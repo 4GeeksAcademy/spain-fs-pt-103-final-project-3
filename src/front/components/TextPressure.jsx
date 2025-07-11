@@ -195,7 +195,7 @@ const TextPressure = ({
         style={{
           fontFamily,
           textTransform: 'uppercase',
-          fontSize: fontSize,
+          fontSize: 130,
           lineHeight,
           transform: `scale(1, ${scaleY})`,
           transformOrigin: 'center top',
@@ -203,7 +203,7 @@ const TextPressure = ({
           textAlign: 'center',
           userSelect: 'none',
           whiteSpace: 'nowrap',
-          fontWeight: 100,
+          fontWeight: 200,
           width: '100%',
         }}
       >

@@ -143,7 +143,7 @@ export const UserView = () => {
 
     //prompt que pasamos a la IA para que genere la receta 
     const prompt = `
-Genera 1 recetas usando un lenguaje de chef profesional, usando solo y unicamente (sin añadir ingredientes extra) estos ingredientes: ${ingredients}, damos por hecho que disponemos de aceite, sal y pimienta.
+Genera 3 recetas usando un lenguaje de chef profesional, usando solo y unicamente (sin añadir ingredientes extra) estos ingredientes: ${ingredients}, damos por hecho que disponemos de aceite, sal y pimienta.
 Para cada receta, incluye:
 - El nombre de la receta ("name")
 - Un array con el paso a paso muy bien desarrollado y extenso donde indique que utensilios debo usar ("steps")
@@ -298,7 +298,7 @@ No agregues texto fuera del JSON.
 
             <form onSubmit={addIngredient}>
                 <div>
-                    <label className="d-flex justify-content-center fs-1 fw-medium">Añade un ingrediente</label>
+                    <label className="d-flex justify-content-center fs-1 fw-medium mt-4">Añade un ingrediente</label>
                 </div>
                 <div>
                     <input
